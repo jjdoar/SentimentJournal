@@ -1,5 +1,5 @@
-## API
-# Getting Started
+# API
+## Getting Started
 Install dependencies
 ```
 pip install -r requirements.txt
