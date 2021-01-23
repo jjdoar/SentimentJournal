@@ -1,4 +1,4 @@
-version: "3"
+version: "3.7"
 
 services:
   db:
@@ -9,13 +9,13 @@ services:
 
       #restart: always
 
-    image: "mirghaeng/pgsj:1.0"
-    container_name: "pgsj-container"
+    image: mirghaeng/pgsj:1.0
+    container_name: pgsj-container
 
     environment:
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=postgres
-      - POSTGRES_DB=pgsj_db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: pgsj_db
 
     ports:
       - "5432:5432"
@@ -23,18 +23,8 @@ services:
     volumes:
       - pg-data:/var/lib/postgresql/data
 
-    network_mode: "host"
-        #networks:
-        #node_net:
-        #ipv4_address: 175.0.0.1
+    network_mode: host
 
 volumes:
   pg-data:
     external: true
-
-    #networks:
-    #node_net:
-    #ipam:
-    #  driver: default
-    #  config:
-    #    - subnet: 175.0.0.0/1
