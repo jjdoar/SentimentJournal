@@ -1,16 +1,16 @@
 version: "3"
 
 services:
-  pgsj:
+  db:
 
     build:
       context: .
       dockerfile: Dockerfile
 
-    restart: always
+      #restart: always
 
     image: "mirghaeng/pgsj:1.0"
-    container_name: "pg-container"
+    container_name: "pgsj-container"
 
     environment:
       - POSTGRES_USER=postgres
@@ -23,6 +23,7 @@ services:
     volumes:
       - pg-data:/var/lib/postgresql/data
 
+    network_mode: "host"
         #networks:
         #node_net:
         #ipv4_address: 175.0.0.1

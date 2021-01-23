@@ -1,4 +1,4 @@
-# postgres image
+# Dockerfile
 
 FROM mirghaeng/pgsj:1.0
 
