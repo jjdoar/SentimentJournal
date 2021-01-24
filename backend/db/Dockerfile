@@ -1,4 +1,5 @@
-# Dockerfile
+# FILENAME: Dockerfile
+# DESCRIPTION: This file contains all commands user must run before assembling the image.
 
 FROM postgres
 
@@ -23,4 +24,4 @@ EXPOSE 5432
 VOLUME ["/etc/postgresql", "/var/log/postgresql", "/var/lib/postgresql"]
 
 # start db.py
-CMD ["python3", "home/app/db.py"]
+CMD ["python3", "db.py"]
