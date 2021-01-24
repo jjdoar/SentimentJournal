@@ -1,6 +1,6 @@
 # Dockerfile
 
-FROM mirghaeng/pgsj:1.0
+FROM postgres
 
 USER root
 
@@ -21,9 +21,6 @@ EXPOSE 5432
 
 # bind mount Postgres volumes for persistent data
 VOLUME ["/etc/postgresql", "/var/log/postgresql", "/var/lib/postgresql"]
-
-# make symbolic link to /tmp/.s.PGSQL.5432
-#RUN ln -s /tmp/.s.PGSQL.5432 /var/run/postgresql/.s.PGSQL.5432
 
 # start db.py
 CMD ["python3", "home/app/db.py"]
