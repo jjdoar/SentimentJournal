@@ -1,3 +1,11 @@
+# DB
+## Getting Started
+Install Docker and call run the PostgreSQL image
+```
+docker-compose up -d
+```
+
+
 # API
 ## Getting Started
 Create a virtual enviornment
