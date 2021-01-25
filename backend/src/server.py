@@ -41,7 +41,7 @@ def journal_entries():
             journal_entries = [
                 {
                     "date": "2021-01-20",
-                    "content": "foo bar"
+                    "content": "foo bar",
                     "userId": "3fa85f64-5717-4562-b3fc-2c963f66afa6"
                 }
             ]
@@ -52,8 +52,47 @@ def journal_entries():
             #TODO Implement Sentiment analysis
 
             return make_response({journal_entries}, 200)
+    
+    if request.method == 'PUT':
+        if not request_body.keys() == {"date", "userId", "content"}:
+            make_response({
+                "message": "Invalid request",
+                "error": "Invalid request body"
+            }, 400)
+        else:
+            date = request_body["date"]
+            user_id = request_body["userId"]
+            content = request_body['content']
 
+            query = "INSERT INTO entry (userId, date, content) VALUES (%s, %s, %s)"
+            values = (user_id, date, content) 
 
+            # cur.execute(query, values)
+            
+            return make_response({
+                "message": "Created"
+            }, 201)
+
+    else:
+        if not request_body.keys() == {"date", "userId", "content"}:
+            make_response({
+                "message": "Invalid request",
+                "error": "Invalid request body"
+            }, 400)
+        else:
+            date = request_body["date"]
+            user_id = request_body["userId"]
+            content = request_body["content"]
+
+            query = "UPDATE entry SET content = %s WHERE userId = %s AND date = %s"
+            values = (content, user_id, date)
+            
+            # cur.execute(query, values)
+            # conn.commit()
+
+            return make_response({
+                "message": "Updated"
+            }, 204)
 
 if __name__ == '__main__':
     
