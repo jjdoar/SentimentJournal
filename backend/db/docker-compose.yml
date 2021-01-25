@@ -1,0 +1,36 @@
+# FILENAME: docker-compose.yml
+# DESCRIPTION: This file runs Dockerfile and allows us to configure our postgres database
+# to run in this environment.
+
+version: "3.7"
+
+services:
+  postgres:
+
+    build:
+      context: .
+      dockerfile: Dockerfile
+
+    #restart: always
+
+    image: postgres
+    container_name: db
+
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+
+    ports:
+      - "5432:5432"
+
+    volumes:
+      #- ./pg-data:/var/lib/postgresql/data
+      - ./sql/schema.sql:/docker-entrypoint-initdb.d/1.schema.sql
+      - ./sql/data.sql:/docker-entrypoint-initdb.d/2.data.sql
+
+    #network_mode: host
+
+#volumes:
+  #pg-data:
+    #external: true
