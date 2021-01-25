@@ -53,7 +53,7 @@ def journal_entries():
 
             return make_response({journal_entries}, 200)
     
-    if request.method == 'PUT':
+    elif request.method == 'PUT':
         if not request_body.keys() == {"date", "userId", "content"}:
             make_response({
                 "message": "Invalid request",
