@@ -1,0 +1,8 @@
+----- DO NOT CHANGE ANYTHING IN THIS FILE ------
+
+
+CREATE DATABASE test;
+
+\connect test
+
+----- DO NOT CHANGE ANYTHING IN THIS FILE ------

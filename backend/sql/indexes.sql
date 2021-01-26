@@ -1,0 +1,1 @@
+CREATE INDEX user_idx ON users(id);
