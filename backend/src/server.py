@@ -9,7 +9,7 @@ from datetime import datetime
 load_dotenv()
 app = Flask(__name__)
 
-db = "host='0.0.0.0' dbname=%s user=%s password=%s" % (os.getenv('POSTGRES_DB'),
+db = "dbname=%s user=%s password=%s" % (os.getenv('POSTGRES_DB'),
                                         os.getenv('POSTGRES_USER'),
                                         os.getenv('POSTGRES_PASSWORD'))
 conn = psycopg2.connect(db)
