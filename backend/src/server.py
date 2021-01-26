@@ -3,7 +3,7 @@ import psycopg2
 import os
 import sys
 from dotenv import load_dotenv
-from flask import Flask, request,  jsonify, make_response
+from flask import Flask, request, jsonify, make_response
 from datetime import datetime
 
 load_dotenv()
@@ -15,10 +15,10 @@ db = "host='0.0.0.0' dbname=%s user=%s password=%s" % (os.getenv('POSTGRES_DB'),
 conn = psycopg2.connect(db)
 cur = conn.cursor()
 
-
 @app.route("/v0/journal_entries", methods=['GET', 'PUT', 'POST'])
 def journal_entries():
-    request_body = request.get_json()
+    request_body = json.loads(request.get_json())
+    print("request_body", request_body)
 
     if request.method == 'GET':
         if not request_body.keys() == {"startDate", "endDate", "userId"}:
