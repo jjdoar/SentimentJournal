@@ -17,8 +17,7 @@ cur = conn.cursor()
 
 @app.route("/v0/journal_entries", methods=['GET', 'PUT', 'POST'])
 def journal_entries():
-    request_body = json.loads(request.get_json())
-    print("request_body", request_body)
+    request_body = request.get_json()
 
     if request.method == 'GET':
         if not request_body.keys() == {"startDate", "endDate", "userId"}:
