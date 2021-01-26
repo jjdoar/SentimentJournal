@@ -9,9 +9,14 @@ class TestAPI(unittest.TestCase):
         query = {'startDate': '2020-11-17', 'endDate': '2021-11-17', 'userId': 1}
         response = requests.get(url="http://0.0.0.0:8081/v0/journal_entries", json=query)
         self.assertEqual(response.status_code, requests.codes.ok)
-        #self.assertEqual(response.json(),
-        #        [{"content":"This is an example post.","date":"2021-01-26","score":0,"userId":1},
-        #            {"content":"A second post.","date":"2021-01-26","score":0,"userId":1}])
+
+    # TEST: data from get
+    def test_get_data(self):
+        query = {'startDate': '2020-11-17', 'endDate': '2021-11-17', 'userId': 1}
+        response = requests.get(url="http://0.0.0.0:8081/v0/journal_entries", json=query)
+        self.assertEqual(response.json(),
+                [{"content":"This is an example post.","date":"2021-01-26","score":0,"userId":1},
+                    {"content":"A second post.","date":"2021-01-26","score":0,"userId":1}])
     
     # TEST: empty query
     def test_get_empty(self):
