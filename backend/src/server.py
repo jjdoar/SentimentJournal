@@ -9,7 +9,7 @@ from datetime import datetime
 load_dotenv()
 app = Flask(__name__)
 
-db = "dbname=%s user=%s password=%s" % (os.getenv('POSTGRES_DB'),
+db = "host='0.0.0.0' dbname=%s user=%s password=%s" % (os.getenv('POSTGRES_DB'),
                                         os.getenv('POSTGRES_USER'),
                                         os.getenv('POSTGRES_PASSWORD'))
 conn = psycopg2.connect(db)
@@ -81,9 +81,9 @@ def journal_entries():
 
             # cur.execute(query, values)
             
-            return make_response({
+            return make_response(jsonify({
                 "message": "Created"
-            }, 201)
+            }), 201)
 
     else:
         if not request_body.keys() == {"date", "userId", "content"}:
@@ -102,9 +102,9 @@ def journal_entries():
             # cur.execute(query, values)
             # conn.commit()
 
-            return make_response({
+            return make_response(jsonify({
                 "message": "Updated"
-            }, 204)
+            }), 204)
 
 if __name__ == '__main__':
     
