@@ -1,6 +1,6 @@
-# README.md 
- 
-# Run Tests 
+# Run Unit Tests
+
+Make sure to activate your virtual environment `venv`.
 
 Run all test methods 
 ```
