@@ -18,7 +18,7 @@ class TestAPI(unittest.TestCase):
 
     def test_post(self):
         data = {"content":"I am updating my post.","date":"2021-01-05","userId":5}
-        response = requests.put(url="http://0.0.0.0:8081/v0/journal_entries", json=data)
+        response = requests.post(url="http://0.0.0.0:8081/v0/journal_entries", json=data)
         self.assertEqual(response.status_code, requests.codes.no_content)
 
 if __name__ == '__main__':
