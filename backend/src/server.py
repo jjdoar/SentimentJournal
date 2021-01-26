@@ -1,8 +1,10 @@
 import json
 import psycopg2
 import os
+import sys
 from dotenv import load_dotenv
 from flask import Flask, request,  jsonify, make_response
+from datetime import datetime
 
 load_dotenv()
 app = Flask(__name__)
@@ -40,10 +42,17 @@ def journal_entries():
             ])
 
             cur.execute(query)
-            journal_entries = cur.fetchall()
+            entry_tuples = cur.fetchall()
+            journal_entries = []
 
-            for journal_entry in journal_entries:
+            for entry_tuple in entry_tuples:
+                journal_entry = {}
+                journal_entry["date"] = str(entry_tuple[1])
+                journal_entry["content"] = entry_tuple[3]
+                journal_entry["userId"] = entry_tuple[4]
                 journal_entry["score"] = 0
+
+                journal_entries.append(journal_entry)
 
             #TODO Implement Sentiment analysis
 
