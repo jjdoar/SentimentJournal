@@ -21,10 +21,11 @@ def journal_entries():
 
     if request.method == 'GET':
         if not request_body.keys() == {"startDate", "endDate", "userId"}:
-            make_response({
+            print("inside if")
+            return make_response(jsonify({
                 "message": "Invalid request",
                 "error": "Invalid request body"
-            }, 400)
+            }), 400)
         else:
             start_date = request_body["startDate"]
             end_date = request_body["endDate"]
@@ -42,6 +43,13 @@ def journal_entries():
 
             cur.execute(query)
             entry_tuples = cur.fetchall()
+
+            if not entry_tuples:
+                return make_response(jsonify({
+                    "message": "Invalid request",
+                    "error": "Invalid request body"
+                    }), 400)
+
             journal_entries = []
 
             for entry_tuple in entry_tuples:
@@ -59,10 +67,10 @@ def journal_entries():
     
     elif request.method == 'PUT':
         if not request_body.keys() == {"date", "userId", "content"}:
-            make_response({
+            return make_response(jsonify({
                 "message": "Invalid request",
                 "error": "Invalid request body"
-            }, 400)
+            }), 400)
         else:
             date = request_body["date"]
             user_id = request_body["userId"]
@@ -79,10 +87,10 @@ def journal_entries():
 
     else:
         if not request_body.keys() == {"date", "userId", "content"}:
-            make_response({
+            return make_response(jsonify({
                 "message": "Invalid request",
                 "error": "Invalid request body"
-            }, 400)
+            }), 400)
         else:
             date = request_body["date"]
             user_id = request_body["userId"]
