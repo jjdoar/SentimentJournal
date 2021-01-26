@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import { Button, TextareaAutosize } from "@material-ui/core";
 
 function EntrySubmitter() {
@@ -34,33 +35,40 @@ function EntrySubmitter() {
 
   const onHeightChangeEvent = (height) => {
     console.log("height", height);
-	};
-	
-	function submitEntry(value, date) {
+  };
 
-		const userId = "User_name";
+  function submitEntry(value, date) {
+    const userId = "User_name";
 
-		console.log(value);
-		console.log(date);
-		console.log(userId);
+    console.log(value);
+    console.log(date);
+    console.log(userId);
 
-		const url = "";
+    const url = "";
 
-		//var dataString = JSON.stringify(dataObj);
+    //var dataString = JSON.stringify(dataObj);
 
-		// Send put request to the backend
-		const requestOptions = {
-			method: 'PUT',
-			headers: { 'Content-Type': 'application/json' },
-			body: JSON.stringify({'date': date, 'userId': userId, 'content': value})
-		};
-		fetch(url, requestOptions)
-			.then(response => response.json())
-			.then(data => this.setState({postId: data.id}));
-	}
+    // Send put request to the backend
+    const requestOptions = {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ date: date, userId: userId, content: value }),
+    };
+    fetch(url, requestOptions)
+      .then((response) => response.json())
+      .then((data) => this.setState({ postId: data.id }));
+  }
 
   return (
-    <div className="EntrySubmitter">
+    <div
+      style={{
+        position: "absolute",
+        left: "50%",
+        top: "50%",
+        transform: "translate(-50%, -50%)",
+        textAlign: "center",
+      }}
+    >
       <h4>Today is {date}</h4>
       <p>{time}</p>
       <div>
@@ -69,9 +77,16 @@ function EntrySubmitter() {
           cols={60}
           placeholder="Insert Journal entry here"
           onChange={onChangeEvent}
-					onHeightChange={onHeightChangeEvent}
+          onHeightChange={onHeightChangeEvent}
         />
-				<Button color="primary" onClick={() => submitEntry(value, date)}>Submit</Button> <br />
+        <br />
+        <Button color="primary" onClick={() => submitEntry(value, date)}>
+          Submit
+        </Button>{" "}
+        <Link to="/">
+          <Button>Back</Button>
+        </Link>
+        <br />
       </div>
       {/* <span>{value}</span> */}
     </div>
