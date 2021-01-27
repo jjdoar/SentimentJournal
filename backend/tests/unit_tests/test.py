@@ -10,43 +10,105 @@ class TestAPI(unittest.TestCase):
         response = requests.get(url="http://0.0.0.0:8081/v0/journal_entries", json=query)
         self.assertEqual(response.status_code, requests.codes.ok)
 
-    # TEST: data from get
+    # TEST: get data
     def test_get_data(self):
         query = {'startDate': '2020-11-17', 'endDate': '2021-11-17', 'userId': 1}
         response = requests.get(url="http://0.0.0.0:8081/v0/journal_entries", json=query)
         self.assertEqual(response.json(),
-                [{"content":"This is an example post.","date":"2021-01-26","score":0,"userId":1},
-                    {"content":"A second post.","date":"2021-01-26","score":0,"userId":1}])
-    
+                [{"content": "This is an example post.", "date": "2021-01-27", "score": 0, "userId": 1},
+                    {"content": "A second post.", "date": "2021-01-27", "score": 0, "userId": 1}])
+
     # TEST: empty query
     def test_get_empty(self):
         query = {}
         response = requests.get(url="http://0.0.0.0:8081/v0/journal_entries", json=query)
         self.assertEqual(response.status_code, requests.codes.bad_request)
 
-    # TEST: no userId
-    def test_get_wrong_key(self):
+    # TEST: no userId key-value specified
+    def test_get_no_id_key_value(self):
         query = {'startDate': '2020-11-17', 'endDate': '2021-11-17'}
         response = requests.get(url="http://0.0.0.0:8081/v0/journal_entries", json=query)
         self.assertEqual(response.status_code, requests.codes.bad_request)
 
-    # TEST: userId does not exist in db
+    # TEST: userId value does not exist in db
     def test_get_id_DNE(self):
-        query = {'startDate': '2020-11-17', 'endDate': '2021-11-17', 'userId': 202}
+        query = {'startDate': '2020-11-17', 'endDate': '2021-11-17', 'userId': 666}
         response = requests.get(url="http://0.0.0.0:8081/v0/journal_entries", json=query)
         self.assertEqual(response.status_code, requests.codes.bad_request)
 
-    # TEST: simple put
+    # TEST: key name does not exist in db, 'endDates'
+    def test_get_key_DNE(self):
+        query = {'startDate': '2020-11-17', 'endDates': '2021-11-17', 'userId': 1}
+        response = requests.get(url="http://0.0.0.0:8081/v0/journal_entries", json=query)
+        self.assertEqual(response.status_code, requests.codes.bad_request)
+
+    # TEST: simple put -> TEST: simple post -> TEST: simple get -> check if data exists in db
     def test_put(self):
-        data = {"content": "I am creating a post.", "date": "2021-01-04", "userId": 202}
+        data = {"content": "Creaing PUT", "date": "2021-01-27", "userId": 1}
         response = requests.put(url="http://0.0.0.0:8081/v0/journal_entries", json=data)
         self.assertEqual(response.status_code, requests.codes.created)
 
-    # TEST: simple post
+    # TEST: empty data
+    def test_put_empty(self):
+        data = {}
+        response = requests.put(url="http://0.0.0.0:8081/v0/journal_entries", json=data)
+        self.assertEqual(response.status_code, requests.codes.bad_request)
+
+    # TEST: no userId key-value
+    def test_put_no_id_key_value(self):
+        data = {"content": "I am creating a post.", "date": "2021-01-04"}
+        response = requests.get(url="http://0.0.0.0:8081/v0/journal_entries", json=data)
+        self.assertEqual(response.status_code, requests.codes.bad_request)
+
+    # TEST: userId value does not exist in db
+    def test_put_id_DNE(self):
+        data = {"content": "I am creating a post.", "date": "2021-01-04", "userId": 666}
+        response = requests.get(url="http://0.0.0.0:8081/v0/journal_entries", json=data)
+        self.assertEqual(response.status_code, requests.codes.bad_request)
+
+    # TEST: key name does not exist in db, 'dates'
+    def test_put_key_DNE(self):
+        data = {"content": "I am creating a post.", "dates": "2021-01-04", "userId": 1}
+        response = requests.get(url="http://0.0.0.0:8081/v0/journal_entries", json=data)
+        self.assertEqual(response.status_code, requests.codes.bad_request)
+
+    # TEST: simple post -> TEST: simple get -> check if data exists in db
     def test_post(self):
-        data = {"content":"I am updating my post.","date":"2021-01-05","userId": 202}
+        data = {"content": "Creating POST", "date": "2021-01-27", "userId": 1}
         response = requests.post(url="http://0.0.0.0:8081/v0/journal_entries", json=data)
         self.assertEqual(response.status_code, requests.codes.no_content)
+
+    # TEST: empty data
+    def test_post_empty(self):
+        data = {}
+        response = requests.put(url="http://0.0.0.0:8081/v0/journal_entries", json=data)
+        self.assertEqual(response.status_code, requests.codes.bad_request)
+
+    # TEST: no userId key-value
+    def test_post_no_id_key_value(self):
+        data = {"content": "I am creating a post.", "date": "2021-01-04"}
+        response = requests.get(url="http://0.0.0.0:8081/v0/journal_entries", json=data)
+        self.assertEqual(response.status_code, requests.codes.bad_request)
+
+    # TEST: userId value does not exist in db
+    def test_post_id_DNE(self):
+        data = {"content": "I am creating a post.", "date": "2021-01-04", "userId": 666}
+        response = requests.get(url="http://0.0.0.0:8081/v0/journal_entries", json=data)
+        self.assertEqual(response.status_code, requests.codes.bad_request)
+
+    # TEST: key name does not exist in db, 'dates'
+    def test_post_key_DNE(self):
+        data = {"content": "I am creating a post.", "dates": "2021-01-04", "userId": 1}
+        response = requests.get(url="http://0.0.0.0:8081/v0/journal_entries", json=data)
+        self.assertEqual(response.status_code, requests.codes.bad_request)
+
+    # TEST: get data
+    def test_get_data(self):
+        query = {'startDate': '2020-11-17', 'endDate': '2021-11-17', 'userId': 1}
+        response = requests.get(url="http://0.0.0.0:8081/v0/journal_entries", json=query)
+        self.assertEqual(response.json(),
+                [{"content": "This is an example post.", "date": "2021-01-27", "score": 0, "userId": 1},
+                    {"content": "A second post.", "date": "2021-01-27", "score": 0, "userId": 1}])
 
 if __name__ == '__main__':
   unittest.main()
