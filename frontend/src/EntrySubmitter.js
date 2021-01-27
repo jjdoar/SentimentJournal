@@ -46,9 +46,8 @@ function EntrySubmitter() {
 
     const url = "";
 
-    //var dataString = JSON.stringify(dataObj);
-
-    // Send put request to the backend
+    // Send PUT request to the backend
+    // Change this to use Axios to send the request
     const requestOptions = {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
