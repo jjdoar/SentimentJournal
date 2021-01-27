@@ -20,7 +20,7 @@ def journal_entries():
     request_body = request.get_json()
 
     if request.method == 'GET':
-        if not request_body.keys() == {"startDate", "endDate", "userId"}:
+        if not request_body or not request_body.keys() == {"startDate", "endDate", "userId"}:
             print("inside if")
             return make_response(jsonify({
                 "message": "Invalid request",
@@ -66,7 +66,7 @@ def journal_entries():
             return make_response(jsonify(journal_entries), 200)
     
     elif request.method == 'PUT':
-        if not request_body.keys() == {"date", "userId", "content"}:
+        if not request_body or not request_body.keys() == {"date", "userId", "content"}:
             return make_response(jsonify({
                 "message": "Invalid request",
                 "error": "Invalid request body"
@@ -74,19 +74,18 @@ def journal_entries():
         else:
             date = request_body["date"]
             user_id = request_body["userId"]
-            content = request_body['content']
+            content = request_body["content"]
+        
+            query = "INSERT INTO entry (user_id, date, content) VALUES ({0}, '{1}', '{2}')"
+            cur.execute(query.format(user_id, date, content))
+            conn.commit()
 
-            query = "INSERT INTO entry (userId, date, content) VALUES (%s, %s, %s)"
-            values = (user_id, date, content) 
-
-            # cur.execute(query, values)
-            
             return make_response(jsonify({
                 "message": "Created"
             }), 201)
 
     else:
-        if not request_body.keys() == {"date", "userId", "content"}:
+        if not request_body or not request_body.keys() == {"date", "userId", "content"}:
             return make_response(jsonify({
                 "message": "Invalid request",
                 "error": "Invalid request body"
@@ -96,11 +95,9 @@ def journal_entries():
             user_id = request_body["userId"]
             content = request_body["content"]
 
-            query = "UPDATE entry SET content = %s WHERE userId = %s AND date = %s"
-            values = (content, user_id, date)
-            
-            # cur.execute(query, values)
-            # conn.commit()
+            query = "UPDATE entry SET content = '{0}' WHERE user_id = {1} AND date = '{2}'"
+            cur.execute(query.format(content, user_id, date))
+            conn.commit()
 
             return make_response(jsonify({
                 "message": "Updated"
