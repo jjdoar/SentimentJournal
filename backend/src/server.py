@@ -55,6 +55,7 @@ def journal_entries():
             for entry_tuple in entry_tuples:
                 journal_entry = {}
                 journal_entry["date"] = str(entry_tuple[1])
+                journal_entry["time"] = str(entry_tuple[2])
                 journal_entry["content"] = entry_tuple[3]
                 journal_entry["userId"] = entry_tuple[4]
                 journal_entry["score"] = 0
@@ -84,7 +85,7 @@ def journal_entries():
                 "message": "Created"
             }), 201)
 
-    else:
+    elif request.method == 'POST':
         if not request_body or not request_body.keys() == {"date", "userId", "content"}:
             return make_response(jsonify({
                 "message": "Invalid request",
