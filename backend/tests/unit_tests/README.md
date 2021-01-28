@@ -15,7 +15,7 @@ To measure code coverage with `backend/src/server.py` run
 coverage run server.py
 ```
 
-Begin running our unittest in directory `tests/unit_tests`
+Begin running our unit test in directory `tests/unit_tests`
 ```
 python -m unittest -v 
 ```

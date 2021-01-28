@@ -40,13 +40,6 @@ class TestAPI(unittest.TestCase):
         response = requests.put(url="http://0.0.0.0:8081/v0/journal_entries", json=data)
         self.assertEqual(response.status_code, requests.codes.created)
 
-    # TEST: get put data
-    #def test_get_put_data(self):
-    #    query = {'startDate': '2021-01-27', 'endDate': '2021-01-27', 'userId': 1}
-    #    response = requests.get(url="http://0.0.0.0:8081/v0/journal_entries", json=query)
-    #    self.assertEqual(response.json(),
-    #            {"content": "Created PUT.", "date": "2021-01-27", "score": 0, "userId": 1})
-
     # TEST: empty data
     def test_put_empty(self):
         data = {}
@@ -94,13 +87,6 @@ class TestAPI(unittest.TestCase):
         data = {"content": "I am creating a post.", "date": "2021-01-04", "userId": 666}
         response = requests.post(url="http://0.0.0.0:8081/v0/journal_entries", json=data)
         self.assertEqual(response.status_code, requests.codes.no_content)
-
-    # TEST: get post data
-    #def test_get_post_data(self):
-    #    query = {'startDate': '2021-01-27', 'endDate': '2021-01-27', 'userId': 1}
-    #    response = requests.get(url="http://0.0.0.0:8081/v0/journal_entries", json=query)
-    #    self.assertEqual(response.json(),
-    #            {"content": "Created POST.", "date": "2021-01-27", "score": 0, "userId": 1})
 
 if __name__ == '__main__':
   unittest.main()
