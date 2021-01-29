@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Button, TextareaAutosize } from "@material-ui/core";
+import axios from "axios";
 
 function EntrySubmitter() {
   const monthNames = [
@@ -38,24 +39,21 @@ function EntrySubmitter() {
   };
 
   function submitEntry(value, date) {
-    const userId = "User_name";
+    const userId = "TestId";
 
-    console.log(value);
     console.log(date);
     console.log(userId);
-
-    const url = "";
+    console.log(value);
 
     // Send PUT request to the backend
-    // Change this to use Axios to send the request
-    const requestOptions = {
-      method: "PUT",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ date: date, userId: userId, content: value }),
-    };
-    fetch(url, requestOptions)
-      .then((response) => response.json())
-      .then((data) => this.setState({ postId: data.id }));
+    axios({
+      method: 'PUT',
+      url: 'http://127.0.0.1:8081/v0/journal_entries',
+      data: { date: date, userId: userId, content: value }
+    })
+    .then((response) => {
+      console.log(response);
+    });
   }
 
   return (
