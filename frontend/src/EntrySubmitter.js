@@ -54,6 +54,7 @@ function EntrySubmitter() {
     .then((response) => {
       console.log(response);
     });
+    // Fix Cross origin resource sharing
   }
 
   return (
