@@ -39,13 +39,13 @@ function EntrySubmitter() {
   };
 
   function submitEntry(value, date) {
-    const userId = "TestId";
+    const userId = "0";
 
     // Send PUT request to the backend
     axios({
       method: 'PUT',
       url: 'http://127.0.0.1:8081/v0/journal_entries',
-      data: { date: date, userId: userId, content: value }
+      data: { date: date, userId: userId, content: value },
     })
     .then((response) => {
       console.log(response);
