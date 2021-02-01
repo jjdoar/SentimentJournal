@@ -4,16 +4,20 @@ import os
 import sys
 from dotenv import load_dotenv
 from flask import Flask, request, jsonify, make_response
+from flask_cors import CORS
 from datetime import datetime
 
 load_dotenv()
 app = Flask(__name__)
+cors = CORS(app)
 
 db = "host='0.0.0.0' dbname=%s user=%s password=%s" % (os.getenv('POSTGRES_DB'),
-                                        os.getenv('POSTGRES_USER'),
-                                        os.getenv('POSTGRES_PASSWORD'))
+                                                       os.getenv(
+                                                           'POSTGRES_USER'),
+                                                       os.getenv('POSTGRES_PASSWORD'))
 conn = psycopg2.connect(db)
 cur = conn.cursor()
+
 
 @app.route("/v0/journal_entries", methods=['GET', 'PUT', 'POST'])
 def journal_entries():
@@ -48,7 +52,7 @@ def journal_entries():
                 return make_response(jsonify({
                     "message": "Invalid request",
                     "error": "Invalid request body"
-                    }), 400)
+                }), 400)
 
             journal_entries = []
 
@@ -62,10 +66,10 @@ def journal_entries():
 
                 journal_entries.append(journal_entry)
 
-            #TODO Implement Sentiment analysis
+            # TODO Implement Sentiment analysis
 
             return make_response(jsonify(journal_entries), 200)
-    
+
     elif request.method == 'PUT':
         if not request_body or not request_body.keys() == {"date", "userId", "content"}:
             return make_response(jsonify({
@@ -76,7 +80,7 @@ def journal_entries():
             date = request_body["date"]
             user_id = request_body["userId"]
             content = request_body["content"]
-        
+
             query = "INSERT INTO entry (user_id, date, content) VALUES ({0}, '{1}', '{2}')"
             cur.execute(query.format(user_id, date, content))
             conn.commit()
@@ -104,6 +108,7 @@ def journal_entries():
                 "message": "Updated"
             }), 204)
 
+
 if __name__ == '__main__':
-    
+
     app.run(host='0.0.0.0', port=8081)
