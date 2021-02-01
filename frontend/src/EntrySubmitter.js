@@ -41,10 +41,6 @@ function EntrySubmitter() {
   function submitEntry(value, date) {
     const userId = "TestId";
 
-    console.log(date);
-    console.log(userId);
-    console.log(value);
-
     // Send PUT request to the backend
     axios({
       method: 'PUT',
