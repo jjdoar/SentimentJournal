@@ -22,5 +22,5 @@ pip install -r requirements.txt
 ```
 Start the flask server
 ```
-python server.py
+python src/server.py
 ```
