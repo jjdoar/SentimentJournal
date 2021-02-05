@@ -39,15 +39,14 @@ function EntrySubmitter() {
   };
 
   function submitEntry(value, date) {
-    const userId = "0";
+    const userId = "1";
 
     // Send PUT request to the backend
     axios({
-      method: 'PUT',
-      url: 'http://127.0.0.1:8081/v0/journal_entries',
+      method: "PUT",
+      url: "http://127.0.0.1:8081/v0/journal_entries",
       data: { date: date, userId: userId, content: value },
-    })
-    .then((response) => {
+    }).then((response) => {
       console.log(response);
     });
     // Fix Cross origin resource sharing
@@ -74,9 +73,11 @@ function EntrySubmitter() {
           onHeightChange={onHeightChangeEvent}
         />
         <br />
-        <Button color="primary" onClick={() => submitEntry(value, date)}>
-          Submit
-        </Button>{" "}
+        <Link to="/">
+          <Button color="primary" onClick={() => submitEntry(value, date)}>
+            Submit
+          </Button>
+        </Link>{" "}
         <Link to="/">
           <Button>Back</Button>
         </Link>

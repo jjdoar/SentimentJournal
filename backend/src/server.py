@@ -32,7 +32,9 @@ def journal_entries():
             }), 400)
         else:
             start_date = request_body["startDate"]
+            print("start_date ", start_date)
             end_date = request_body["endDate"]
+            print("end_date ", end_date)
             user_id = request_body["userId"]
 
             query = "".join([
@@ -77,6 +79,11 @@ def journal_entries():
                 "error": "Invalid request body"
             }), 400)
         else:
+
+            query = "INSERT INTO users (id, name) VALUES (DEFAULT, 'jasmine') ON CONFLICT DO NOTHING"
+            cur.execute(query)
+            conn.commit()
+
             date = request_body["date"]
             user_id = request_body["userId"]
             content = request_body["content"]
