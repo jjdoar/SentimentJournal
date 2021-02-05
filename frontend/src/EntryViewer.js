@@ -15,13 +15,7 @@ function EntryViewer(props) {
     "-" +
     pad(beg_date.getUTCMonth() + 1) +
     "-" +
-    pad(beg_date.getUTCDate()) +
-    " " +
-    pad(0) +
-    ":" +
-    pad(beg_date.getUTCMinutes()) +
-    ":" +
-    pad(beg_date.getUTCSeconds());
+    pad(beg_date.getUTCDate());
 
   console.log(beg_date);
 
@@ -31,35 +25,35 @@ function EntryViewer(props) {
     "-" +
     pad(end_date.getUTCMonth() + 1) +
     "-" +
-    pad(end_date.getUTCDate()) +
-    " " +
-    pad(23) +
-    ":" +
-    pad(59) +
-    ":" +
-    pad(59);
+    pad(end_date.getUTCDate() + 1);
 
   console.log(end_date);
 
-  const entries = axios
-    .get("http://127.0.0.1:8081/v0/journal_entries", {
-      params: {
-        startDate: beg_date,
-        endDate: end_date,
-        userId: "1",
-      },
-    })
-    .then(function (response) {
-      console.log(response);
-    })
-    .catch(function (error) {
-      console.log(error);
-    });
+
+  // axios({
+  //   method: "GET",
+  //   url: "http://127.0.0.1:8081/v0/journal_entries",
+  //   data: { "startDate": beg_date, "endDate": end_date, "userId": 1 },
+  // }).then((response) => {
+  //   console.log(response);
+  // });
+
+axios
+  .get("http://127.0.0.1:8081/v0/journal_entries", {
+    data: {
+      "startDate": beg_date,
+      "endDate": end_date,
+      "userId": 1,
+    },
+  })
+  .then((response) => {
+    console.log(response);
+  });
 
   return (
     <div>
       <h2>{props.date.toDateString()}</h2>
-      <h1>{JSON.stringify(entries)}</h1>
+      {/* <h1>{JSON.stringify(entries)}</h1> */}
     </div>
   );
 }

@@ -22,8 +22,13 @@ cur = conn.cursor()
 @app.route("/v0/journal_entries", methods=['GET', 'PUT', 'POST'])
 def journal_entries():
     request_body = request.get_json()
+    print(request_body, flush=True)
+    print(type(request_body))
+    print(request_body.keys())
+    sys.stdout.flush()
 
     if request.method == 'GET':
+        print(request_body)
         if not request_body or not request_body.keys() == {"startDate", "endDate", "userId"}:
             print("inside if")
             return make_response(jsonify({
