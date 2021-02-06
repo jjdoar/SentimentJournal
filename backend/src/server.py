@@ -21,7 +21,6 @@ db = "host='0.0.0.0' dbname=%s user=%s password=%s" % (os.getenv('POSTGRES_DB'),
 conn = psycopg2.connect(db)
 cur = conn.cursor()
 
-
 @app.route("/v0/journal_entries", methods=['GET', 'PUT', 'POST'])
 def journal_entries():
     request_body = request.get_json()
@@ -35,13 +34,12 @@ def journal_entries():
                 "error": "Invalid request body"
             }), 400)
         else:
-            print(request_body["startDate"])
-
             start_date = request_body["startDate"]
-            print("start_date ", start_date)
+            print("start_date: ", start_date)
             end_date = request_body["endDate"]
-            print("end_date ", end_date)
+            print("end_date: ", end_date)
             user_id = request_body["userId"]
+            print("user_id: ", user_id)
 
             query = "".join([
                 "SELECT * FROM entry WHERE user_id = ",
@@ -111,7 +109,7 @@ def journal_entries():
             sentiment = client.analyze_sentiment(request={'document': document}).document_sentiment
             score = round(sentiment.score, 3)
 
-            query = "UPDATE entry SET conten    t = '{0}', score = {3} WHERE user_id = {1} AND date = '{2}'"
+            query = "UPDATE entry SET content = '{0}', score = {3} WHERE user_id = {1} AND date = '{2}'"
             cur.execute(query.format(content, user_id, date, score))
             conn.commit()
 
