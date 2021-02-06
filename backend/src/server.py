@@ -27,11 +27,6 @@ def journal_entries():
     request_body = request.get_json()
 
     if request.method == 'GET':
-        request_body = {
-            "startDate" : request.args.get("startDate"),
-            "endDate" : request.args.get("endDate"),
-            "userId" : request.args.get("userId")
-        }
 
         if not request_body or not request_body.keys() == {"startDate", "endDate", "userId"}:
             print("inside if")
@@ -40,6 +35,8 @@ def journal_entries():
                 "error": "Invalid request body"
             }), 400)
         else:
+            print(request_body["startDate"])
+
             start_date = request_body["startDate"]
             print("start_date ", start_date)
             end_date = request_body["endDate"]
@@ -59,12 +56,6 @@ def journal_entries():
             cur.execute(query)
             entry_tuples = cur.fetchall()
 
-##            if not entry_tuples:
-##                return make_response(jsonify({
-##                    "message": "Invalid request",
-##                    "error": "Invalid request body"
-##                }), 400)
-
             journal_entries = []
 
             for entry_tuple in entry_tuples:
@@ -73,11 +64,9 @@ def journal_entries():
                 journal_entry["time"] = str(entry_tuple[2])
                 journal_entry["content"] = entry_tuple[3]
                 journal_entry["userId"] = entry_tuple[4]
-                journal_entry["score"] = 0
+                journal_entry["score"] = entry_tuple[5]
 
                 journal_entries.append(journal_entry)
-
-            # TODO Implement Sentiment analysis
 
             return make_response(jsonify(journal_entries), 200)
 
