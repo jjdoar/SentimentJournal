@@ -5,3 +5,4 @@ cd backend
 docker-compose up -d
 cd src
 python server.py
+
