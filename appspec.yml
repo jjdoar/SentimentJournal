@@ -1,0 +1,19 @@
+version: 0.0
+os: linux
+files:
+  - source: /
+    destination: home/ec2-user/SentimentJournal
+permissions:
+  - object: /home/ec2-user/SentimentJournal
+    owner: ec2-user
+    group: Mirr.or-app-group
+hooks:
+  BeforeInstall:
+    - location: script/install_dependencies
+      timeout: 300
+      runas: root
+  ApplicationStart:
+    - location: script/start_database
+    - location: script/start_server
+      timeout: 300
+      runas: root

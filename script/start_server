@@ -1,0 +1,7 @@
+#!/bin/bash
+cd /home/ec2-user/SentimentJournal
+source venv/bin/activate
+cd backend
+docker-compose up -d
+cd src
+python server.py
