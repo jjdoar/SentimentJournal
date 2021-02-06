@@ -6,6 +6,9 @@ from dotenv import load_dotenv
 from flask import Flask, request, jsonify, make_response
 from flask_cors import CORS
 from datetime import datetime
+from google.cloud import language_v1
+
+client = language_v1.LanguageServiceClient()
 
 load_dotenv()
 app = Flask(__name__)
@@ -56,11 +59,11 @@ def journal_entries():
             cur.execute(query)
             entry_tuples = cur.fetchall()
 
-            if not entry_tuples:
-                return make_response(jsonify({
-                    "message": "Invalid request",
-                    "error": "Invalid request body"
-                }), 400)
+##            if not entry_tuples:
+##                return make_response(jsonify({
+##                    "message": "Invalid request",
+##                    "error": "Invalid request body"
+##                }), 400)
 
             journal_entries = []
 
@@ -86,16 +89,17 @@ def journal_entries():
             }), 400)
         else:
 
-            query = "INSERT INTO users (id, name) VALUES (DEFAULT, 'jasmine') ON CONFLICT DO NOTHING"
-            cur.execute(query)
-            conn.commit()
-
             date = request_body["date"]
             user_id = request_body["userId"]
             content = request_body["content"]
 
-            query = "INSERT INTO entry (user_id, date, content) VALUES ({0}, '{1}', '{2}')"
-            cur.execute(query.format(user_id, date, content))
+            # Detects the sentiment of the text
+            document = language_v1.Document(content=content, type_=language_v1.Document.Type.PLAIN_TEXT)
+            sentiment = client.analyze_sentiment(request={'document': document}).document_sentiment
+            score = round(sentiment.score, 3)
+            
+            query = "INSERT INTO entry (user_id, date, content, score) VALUES ({0}, '{1}', '{2}', {3})"
+            cur.execute(query.format(user_id, date, content, score))
             conn.commit()
 
             return make_response(jsonify({
@@ -113,8 +117,13 @@ def journal_entries():
             user_id = request_body["userId"]
             content = request_body["content"]
 
-            query = "UPDATE entry SET content = '{0}' WHERE user_id = {1} AND date = '{2}'"
-            cur.execute(query.format(content, user_id, date))
+            # Detects the sentiment of the text
+            document = language_v1.Document(content=content, type_=language_v1.Document.Type.PLAIN_TEXT)
+            sentiment = client.analyze_sentiment(request={'document': document}).document_sentiment
+            score = round(sentiment.score, 3)
+
+            query = "UPDATE entry SET conten    t = '{0}', score = {3} WHERE user_id = {1} AND date = '{2}'"
+            cur.execute(query.format(content, user_id, date, score))
             conn.commit()
 
             return make_response(jsonify({
