@@ -6,6 +6,9 @@ from dotenv import load_dotenv
 from flask import Flask, request, jsonify, make_response
 from flask_cors import CORS
 from datetime import datetime
+from google.cloud import language_v1
+
+client = language_v1.LanguageServiceClient()
 
 load_dotenv()
 app = Flask(__name__)
@@ -18,12 +21,12 @@ db = "host='0.0.0.0' dbname=%s user=%s password=%s" % (os.getenv('POSTGRES_DB'),
 conn = psycopg2.connect(db)
 cur = conn.cursor()
 
-
 @app.route("/v0/journal_entries", methods=['GET', 'PUT', 'POST'])
 def journal_entries():
     request_body = request.get_json()
 
     if request.method == 'GET':
+
         if not request_body or not request_body.keys() == {"startDate", "endDate", "userId"}:
             print("inside if")
             return make_response(jsonify({
@@ -32,8 +35,11 @@ def journal_entries():
             }), 400)
         else:
             start_date = request_body["startDate"]
+            print("start_date: ", start_date)
             end_date = request_body["endDate"]
+            print("end_date: ", end_date)
             user_id = request_body["userId"]
+            print("user_id: ", user_id)
 
             query = "".join([
                 "SELECT * FROM entry WHERE user_id = ",
@@ -48,12 +54,6 @@ def journal_entries():
             cur.execute(query)
             entry_tuples = cur.fetchall()
 
-            if not entry_tuples:
-                return make_response(jsonify({
-                    "message": "Invalid request",
-                    "error": "Invalid request body"
-                }), 400)
-
             journal_entries = []
 
             for entry_tuple in entry_tuples:
@@ -62,11 +62,9 @@ def journal_entries():
                 journal_entry["time"] = str(entry_tuple[2])
                 journal_entry["content"] = entry_tuple[3]
                 journal_entry["userId"] = entry_tuple[4]
-                journal_entry["score"] = 0
+                journal_entry["score"] = entry_tuple[5]
 
                 journal_entries.append(journal_entry)
-
-            # TODO Implement Sentiment analysis
 
             return make_response(jsonify(journal_entries), 200)
 
@@ -77,12 +75,18 @@ def journal_entries():
                 "error": "Invalid request body"
             }), 400)
         else:
+
             date = request_body["date"]
             user_id = request_body["userId"]
             content = request_body["content"]
 
-            query = "INSERT INTO entry (user_id, date, content) VALUES ({0}, '{1}', '{2}')"
-            cur.execute(query.format(user_id, date, content))
+            # Detects the sentiment of the text
+            document = language_v1.Document(content=content, type_=language_v1.Document.Type.PLAIN_TEXT)
+            sentiment = client.analyze_sentiment(request={'document': document}).document_sentiment
+            score = round(sentiment.score, 3)
+            
+            query = "INSERT INTO entry (user_id, date, content, score) VALUES ({0}, '{1}', '{2}', {3})"
+            cur.execute(query.format(user_id, date, content, score))
             conn.commit()
 
             return make_response(jsonify({
@@ -100,8 +104,13 @@ def journal_entries():
             user_id = request_body["userId"]
             content = request_body["content"]
 
-            query = "UPDATE entry SET content = '{0}' WHERE user_id = {1} AND date = '{2}'"
-            cur.execute(query.format(content, user_id, date))
+            # Detects the sentiment of the text
+            document = language_v1.Document(content=content, type_=language_v1.Document.Type.PLAIN_TEXT)
+            sentiment = client.analyze_sentiment(request={'document': document}).document_sentiment
+            score = round(sentiment.score, 3)
+
+            query = "UPDATE entry SET content = '{0}', score = {3} WHERE user_id = {1} AND date = '{2}'"
+            cur.execute(query.format(content, user_id, date, score))
             conn.commit()
 
             return make_response(jsonify({

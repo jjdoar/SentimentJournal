@@ -3,12 +3,18 @@ import EntrySubmitter from "./EntrySubmitter";
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import Calendar from "react-calendar";
+import EntryViewer from "./EntryViewer";
 import { Button, Box } from "@material-ui/core";
 
 import "react-calendar/dist/Calendar.css";
 
 function App() {
-  const [value, onChange] = useState(new Date());
+  const [value, setValue] = useState(new Date());
+
+  function onChange(value) {
+    setValue(value);
+  }
+
   return (
     <div
       style={{
@@ -24,7 +30,7 @@ function App() {
       </Link>
       <Calendar onChange={onChange} value={value} />
 
-      <Box>This Is Where The Return Text Will Be</Box>
+      <EntryViewer date={value} />
     </div>
   );
 }
