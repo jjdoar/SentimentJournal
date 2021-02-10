@@ -2,3 +2,4 @@ flask
 flask-cors
 psycopg2
 python-dotenv
+google-cloud-language

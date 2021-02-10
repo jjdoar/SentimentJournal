@@ -24,6 +24,18 @@ def journal_entries():
     request_body = request.get_json()
 
     if request.method == 'GET':
+        print(request.args.get("startDate"))
+        print(request.args.get("endDate"))
+        print(request.args.get("userID"))
+
+        request_body = {
+            "startDate" : request.args.get("startDate"),
+            "endDate": request.args.get("endDate"),
+            "userId" : request.args.get("userID"),
+        }
+
+        print(request_body)
+
         if not request_body or not request_body.keys() == {"startDate", "endDate", "userId"}:
             print("inside if")
             return make_response(jsonify({

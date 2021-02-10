@@ -1,5 +1,6 @@
 import "./App.css";
 import EntrySubmitter from "./EntrySubmitter";
+import EntryViewer from "./EntryViewer";
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import Calendar from "react-calendar";
@@ -23,8 +24,7 @@ function App() {
         <Button>New</Button>
       </Link>
       <Calendar onChange={onChange} value={value} />
-
-      <Box>This Is Where The Return Text Will Be</Box>
+      <EntryViewer date={value}/>
     </div>
   );
 }
