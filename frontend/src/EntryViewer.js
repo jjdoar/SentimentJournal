@@ -43,7 +43,7 @@ function EntryViewer(props) {
 
   axios({
     method: "GET",
-    url: "http://13.57.224.4:8081/v0/journal_entries",
+    url: "http://54.151.49.150:8081/v0/journal_entries",
     params: { startDate: beg_date, endDate: end_date, userId: 1 },
   }).then((response) => {
     console.log(response);
