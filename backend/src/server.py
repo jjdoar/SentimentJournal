@@ -108,7 +108,7 @@ def journal_entries():
             score = round(sentiment.score, 3)
 
             query = "UPDATE entry SET content = '{0}', score = {3} WHERE user_id = {1} AND date = '{2}'"
-            cur.execute(query.format(content, user_id, date, score))
+            cur.execute(query.format(content, score, user_id, date))
             conn.commit()
 
             return make_response(jsonify({
