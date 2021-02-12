@@ -45,7 +45,7 @@ function EntrySubmitter() {
     // Send PUT request to the backend
     axios({
       method: "PUT",
-      url: "http://13.57.224.4:8081/v0/journal_entries",
+      url: "http://54.151.49.150:8081/v0/journal_entries",
       data: { "date": current.toISOString().substring(0,10), "userId": userId, "content": value },
     }).then((response) => {
       console.log(response);
