@@ -23,13 +23,15 @@ cur = conn.cursor()
 
 @app.route("/v0/journal_entries", methods=['GET', 'PUT', 'POST'])
 def journal_entries():
-    
-    if request.method == 'GET':
+   
+    request_body = request.get_json()
+    print(request_body)
+    startDate = request.args.get("startDate")
+    endDate = request.args.get("endDate")
+    userId = request.args.get("userId")
+    print(startDate, endDate, userId)
 
-        startDate = request.args.get("startDate")
-        endDate = request.args.get("endDate")
-        userId = request.args.get("userId")
-        print(startDate, endDate, userId)
+    if request.method == 'GET':
 
         if not any([startDate, endDate, userId]):
             print("inside if")
