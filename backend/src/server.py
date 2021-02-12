@@ -23,33 +23,32 @@ cur = conn.cursor()
 
 @app.route("/v0/journal_entries", methods=['GET', 'PUT', 'POST'])
 def journal_entries():
+   
     request_body = request.get_json()
+    print(request_body)
+    startDate = request.args.get("startDate")
+    endDate = request.args.get("endDate")
+    userId = request.args.get("userId")
+    print(startDate, endDate, userId)
 
     if request.method == 'GET':
 
-        if not request_body or not request_body.keys() == {"startDate", "endDate", "userId"}:
+        if not any([startDate, endDate, userId]):
             print("inside if")
             return make_response(jsonify({
                 "message": "Invalid request",
                 "error": "Invalid request body"
             }), 400)
         else:
-            start_date = request_body["startDate"]
-            print("start_date: ", start_date)
-            end_date = request_body["endDate"]
-            print("end_date: ", end_date)
-            user_id = request_body["userId"]
-            print("user_id: ", user_id)
-
             query = "".join([
                 "SELECT * FROM entry WHERE user_id = ",
-                str(user_id),
+                str(userId),
                 " AND date >= DATE '",
-                start_date,
+                startDate,
                 "' AND date <= DATE '",
-                end_date,
+                endDate,
                 "';"
-            ])
+                ])
 
             cur.execute(query)
             entry_tuples = cur.fetchall()
@@ -63,10 +62,9 @@ def journal_entries():
                 journal_entry["content"] = entry_tuple[3]
                 journal_entry["userId"] = entry_tuple[4]
                 journal_entry["score"] = entry_tuple[5]
-
                 journal_entries.append(journal_entry)
 
-            return make_response(jsonify(journal_entries), 200)
+        return make_response(jsonify(journal_entries), 200)
 
     elif request.method == 'PUT':
         if not request_body or not request_body.keys() == {"date", "userId", "content"}:
