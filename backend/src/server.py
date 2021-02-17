@@ -21,9 +21,10 @@ db = "host='0.0.0.0' dbname=%s user=%s password=%s" % (os.getenv('POSTGRES_DB'),
 conn = psycopg2.connect(db)
 cur = conn.cursor()
 
-@app.route("/v0/journal_entries", methods=['GET', 'PUT', 'POST'])
+
+@app.route("/v0/journal_entries", methods=['GET', 'PUT'])
 def journal_entries():
-   
+
     request_body = request.get_json()
     print(request_body)
     startDate = request.args.get("startDate")
@@ -34,55 +35,68 @@ def journal_entries():
     if request.method == 'GET':
 
         if not any([startDate, endDate, userId]):
-            print("inside if")
             return make_response(jsonify({
                 "message": "Invalid request",
                 "error": "Invalid request body"
             }), 400)
-        else:
-            query = "".join([
-                "SELECT * FROM entry WHERE user_id = ",
-                str(userId),
-                " AND date >= DATE '",
-                startDate,
-                "' AND date <= DATE '",
-                endDate,
-                "';"
-                ])
 
-            cur.execute(query)
-            entry_tuples = cur.fetchall()
+        query = "".join([
+            "SELECT * FROM entry WHERE user_id = ",
+            str(userId),
+            " AND date >= DATE '",
+            startDate,
+            "' AND date <= DATE '",
+            endDate,
+            "';"
+        ])
 
-            journal_entries = []
+        cur.execute(query)
+        entry_tuples = cur.fetchall()
 
-            for entry_tuple in entry_tuples:
-                journal_entry = {}
-                journal_entry["date"] = str(entry_tuple[1])
-                journal_entry["time"] = str(entry_tuple[2])
-                journal_entry["content"] = entry_tuple[3]
-                journal_entry["userId"] = entry_tuple[4]
-                journal_entry["score"] = entry_tuple[5]
-                journal_entries.append(journal_entry)
+        journal_entries = []
+
+        for entry_tuple in entry_tuples:
+            journal_entry = {}
+            journal_entry["date"] = str(entry_tuple[1])
+            journal_entry["time"] = str(entry_tuple[2])
+            journal_entry["content"] = entry_tuple[3]
+            journal_entry["userId"] = entry_tuple[4]
+            journal_entry["score"] = entry_tuple[5]
+            journal_entries.append(journal_entry)
 
         return make_response(jsonify(journal_entries), 200)
 
-    elif request.method == 'PUT':
+    if request.method == 'PUT':
         if not request_body or not request_body.keys() == {"date", "userId", "content"}:
             return make_response(jsonify({
                 "message": "Invalid request",
                 "error": "Invalid request body"
             }), 400)
-        else:
 
-            date = request_body["date"]
-            user_id = request_body["userId"]
-            content = request_body["content"]
+        date = request_body["date"]
+        user_id = request_body["userId"]
+        content = request_body["content"]
 
-            # Detects the sentiment of the text
-            document = language_v1.Document(content=content, type_=language_v1.Document.Type.PLAIN_TEXT)
-            sentiment = client.analyze_sentiment(request={'document': document}).document_sentiment
-            score = round(sentiment.score, 3)
-            
+        # Detects the sentiment of the text
+        document = language_v1.Document(
+            content=content, type_=language_v1.Document.Type.PLAIN_TEXT)
+        sentiment = client.analyze_sentiment(
+            request={'document': document}).document_sentiment
+        score = round(sentiment.score, 3)
+
+        query = "".join([
+            "SELECT * FROM entry WHERE user_id = ",
+            str(user_id),
+            " AND date = DATE '",
+            date,
+            "';"
+        ])
+
+        cur.execute(query)
+        entry_tuple = cur.fetchall()
+
+        # Check if entry exists yet
+        if not entry_tuple:
             query = "INSERT INTO entry (user_id, date, content, score) VALUES ({0}, '{1}', '{2}', {3})"
             cur.execute(query.format(user_id, date, content, score))
             conn.commit()
@@ -91,29 +105,13 @@ def journal_entries():
                 "message": "Created"
             }), 201)
 
-    elif request.method == 'POST':
-        if not request_body or not request_body.keys() == {"date", "userId", "content"}:
-            return make_response(jsonify({
-                "message": "Invalid request",
-                "error": "Invalid request body"
-            }), 400)
-        else:
-            date = request_body["date"]
-            user_id = request_body["userId"]
-            content = request_body["content"]
+        query = "UPDATE entry SET content = '{0}', score = {1} WHERE user_id = {2} AND date = '{3}'"
+        cur.execute(query.format(content, score, user_id, date))
+        conn.commit()
 
-            # Detects the sentiment of the text
-            document = language_v1.Document(content=content, type_=language_v1.Document.Type.PLAIN_TEXT)
-            sentiment = client.analyze_sentiment(request={'document': document}).document_sentiment
-            score = round(sentiment.score, 3)
-
-            query = "UPDATE entry SET content = '{0}', score = {3} WHERE user_id = {1} AND date = '{2}'"
-            cur.execute(query.format(content, score, user_id, date))
-            conn.commit()
-
-            return make_response(jsonify({
-                "message": "Updated"
-            }), 204)
+        return make_response(jsonify({
+            "message": "Updated"
+        }), 204)
 
 
 if __name__ == '__main__':

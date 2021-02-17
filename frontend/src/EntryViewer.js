@@ -6,7 +6,6 @@ function EntryViewer(props) {
   // send GET request
   console.log(props.date);
 
-
   var pad = function (num) {
     return ("00" + num).slice(-2);
   };
@@ -41,14 +40,19 @@ function EntryViewer(props) {
   //   console.log(err);
   // });
 
+  var journalEntries = {};
+
   axios({
     method: "GET",
-    url: "http://54.151.49.150:8081/v0/journal_entries",
+    url: "http://154.151.49.150:8081/v0/journal_entries",
     params: { startDate: beg_date, endDate: end_date, userId: 1 },
   }).then((response) => {
     console.log(response);
-  });
+    journalEntries = response.data;
+    console.log("Journal entries: ", journalEntries);
 
+
+  });
 
   return (
     <div>
