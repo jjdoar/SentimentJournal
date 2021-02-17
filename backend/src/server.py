@@ -66,7 +66,7 @@ def journal_entries():
 
         return make_response(jsonify(journal_entries), 200)
 
-    elif request.method == 'PUT':
+    if request.method == 'PUT':
         if not request_body or not request_body.keys() == {"date", "userId", "content"}:
             return make_response(jsonify({
                 "message": "Invalid request",
@@ -112,8 +112,6 @@ def journal_entries():
         return make_response(jsonify({
             "message": "Updated"
         }), 204)
-    else:
-        print("Error: Invalid request method", flush=True)
 
 
 if __name__ == '__main__':
