@@ -28,7 +28,6 @@ function App() {
       <Link to="/entry">
         <Button>New</Button>
       </Link>
-      <Calendar onChange={onChange} value={value} />
 
       <EntryViewer date={value} />
     </div>

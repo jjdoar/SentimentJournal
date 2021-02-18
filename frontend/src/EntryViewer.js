@@ -1,8 +1,17 @@
+import "./styles.css";
 import React, { useState, useEffect } from "react";
 import { Button, TextareaAutosize } from "@material-ui/core";
+import Calendar from "react-calendar";
 import axios from "axios";
+import "react-calendar/dist/Calendar.css";
 
 function EntryViewer(props) {
+
+  function onChange(value) {
+    setValue(value);
+  }
+  const [value, setValue] = useState(new Date());
+
   // send GET request
   console.log(props.date);
 
@@ -42,6 +51,81 @@ function EntryViewer(props) {
 
   var journalEntries = {};
 
+  var tempEntries = {
+    0:{
+      content: "hello world",
+      date: "2021-02-18",
+      score: 0.8,
+      time: "06:48:05.385405",
+      userId: 1,
+      },
+    1:{
+      content: "goodbye world",
+      date: "2021-02-17",
+      score: -0.8,
+      time: "06:48:05.385405",
+      userId: 1,
+    }
+  }
+  //console.log("This is in temp entries " + tempEntries[0]['date']);
+  var moodScore = 0;
+  //var moodColor = "rgb(0, 0, 0)";
+ // var redScore;
+  //var greenScore;
+
+  //THIS CANNOT WORK WITH tileContent()
+  //I'm keeping it for when we implement highlighting the current day's entry
+  /*for (let entry in tempEntries) {
+    moodScore = tempEntries[entry]['score'];
+    redScore = 255;
+    greenScore = 255;
+    if(moodScore >= 0){
+      redScore = 255 - Math.floor(255 * moodScore);
+    } else{
+      greenScore = 255 + Math.floor(255 * moodScore);
+    }
+    moodColor = "rgb(" + redScore + ", " + greenScore + ", 0)";
+  }*/
+
+  function tileClassName({ date, view }) {
+    // Add class to tiles in month view only
+    //console.log("I am being called I am tileContent");
+    var editedDate = date.getUTCFullYear() +
+    "-" +
+    pad(date.getUTCMonth() + 1) +
+    "-" +
+    pad(date.getUTCDate() + 1);
+
+    var listofEntries = [];
+    for(let entry in tempEntries){
+      listofEntries.push(tempEntries[entry]['date']);
+    }
+    if (view === 'month') {
+      //console.log("I am being called I am tileContent");
+      //console.log(listofEntries);
+      //console.log(date);
+      //console.log(date);
+      if (listofEntries.find(dDate => dDate == editedDate)) {
+        //console.log("I am being called I am tileContent");
+        //I think how I find the same date could be improved
+        for(let entry in tempEntries){
+          if(editedDate == tempEntries[entry]['date']){
+            moodScore = tempEntries[entry]['score'];
+            if(moodScore >= 0.5){
+              return "green";
+            } else if (moodScore < -0.5) {
+              return "red";
+            } else {
+              return "yellow";
+            }
+          }
+        }
+      }
+    }
+  }
+
+  console.log("Temp entry: ", tempEntries);
+
   axios({
     method: "GET",
     url: "http://127.0.0.1:8081/v0/journal_entries",
@@ -51,11 +135,16 @@ function EntryViewer(props) {
     journalEntries = response.data;
     console.log("Journal entries: ", journalEntries);
 
-
   });
 
   return (
     <div>
+      <Calendar 
+      onChange={onChange} 
+      value={value} 
+      tileClassName={tileClassName}
+      />
+
       <h2>{props.date.toDateString()}</h2>
       {/* <h1>{JSON.stringify(entries)}</h1> */}
     </div>
