@@ -11,9 +11,10 @@ function EntryViewer(props) {
     setValue(value);
   }
   const [value, setValue] = useState(new Date());
+  const [journalEntries, setJournalEntries] = useState({});
 
   // send GET request
-  console.log(props.date);
+  // console.log(props.date);
 
   var pad = function (num) {
     return ("00" + num).slice(-2);
@@ -38,39 +39,26 @@ function EntryViewer(props) {
 
   console.log(end_date);
 
-  // axios.post("http://127.0.0.1:8081/v0/journal_entries", {
-  //   "startDate": beg_date,
-  //   "endDate": end_date,
-  //   "userId": 1,
-  //   method: "GET"
-  // }).then(response => {
-  //   this.posts = response.data;
-  // }).catch(err => {
-  //   console.log(err);
-  // });
-
-  var journalEntries = {};
-
-  var tempEntries = {
-    0:{
-      content: "hello world",
-      date: "2021-02-18",
-      score: 0.8,
-      time: "06:48:05.385405",
-      userId: 1,
-      },
-    1:{
-      content: "goodbye world",
-      date: "2021-02-17",
-      score: -0.8,
-      time: "06:48:05.385405",
-      userId: 1,
-    }
-  }
+  // var tempEntries = {
+  //   0:{
+  //     content: "hello world",
+  //     date: "2021-02-18",
+  //     score: 0.8,
+  //     time: "06:48:05.385405",
+  //     userId: 1,
+  //     },
+  //   1:{
+  //     content: "goodbye world",
+  //     date: "2021-02-17",
+  //     score: -0.8,
+  //     time: "06:48:05.385405",
+  //     userId: 1,
+  //   }
+  // }
   //console.log("This is in temp entries " + tempEntries[0]['date']);
   var moodScore = 0;
   //var moodColor = "rgb(0, 0, 0)";
- // var redScore;
+  // var redScore;
   //var greenScore;
 
   //THIS CANNOT WORK WITH tileContent()
@@ -88,29 +76,32 @@ function EntryViewer(props) {
   }*/
 
   function tileClassName({ date, view }) {
+
+    console.log("Inside tileClass journal entries: ", journalEntries);
+
     // Add class to tiles in month view only
     //console.log("I am being called I am tileContent");
     var editedDate = date.getUTCFullYear() +
     "-" +
     pad(date.getUTCMonth() + 1) +
     "-" +
-    pad(date.getUTCDate() + 1);
+    pad(date.getUTCDate());
 
     var listofEntries = [];
-    for(let entry in tempEntries){
-      listofEntries.push(tempEntries[entry]['date']);
+    for(let entry in journalEntries){
+      listofEntries.push(journalEntries[entry]['date']);
     }
     if (view === 'month') {
-      //console.log("I am being called I am tileContent");
+      // console.log("I am being called I am tileContent");
       //console.log(listofEntries);
       //console.log(date);
       //console.log(date);
       if (listofEntries.find(dDate => dDate == editedDate)) {
-        //console.log("I am being called I am tileContent");
+        // console.log("I am being called I am tileContent");
         //I think how I find the same date could be improved
-        for(let entry in tempEntries){
-          if(editedDate == tempEntries[entry]['date']){
-            moodScore = tempEntries[entry]['score'];
+        for(let entry in journalEntries){
+          if(editedDate == journalEntries[entry]['date']){
+            moodScore = journalEntries[entry]['score'];
             if(moodScore >= 0.5){
               return "green";
             } else if (moodScore < -0.5) {
@@ -124,17 +115,18 @@ function EntryViewer(props) {
     }
   }
 
-  console.log("Temp entry: ", tempEntries);
+  // console.log("Temp entry: ", tempEntries);
 
-  axios({
-    method: "GET",
-    url: "http://127.0.0.1:8081/v0/journal_entries",
-    params: { startDate: beg_date, endDate: end_date, userId: 1 },
-  }).then((response) => {
-    console.log(response);
-    journalEntries = response.data;
-    console.log("Journal entries: ", journalEntries);
-
+  useEffect(() => {
+    axios({
+      method: "GET",
+      url: "http://127.0.0.1:8081/v0/journal_entries",
+      params: { startDate: beg_date, endDate: end_date, userId: 1 },
+    }).then((response) => {
+      console.log(response);
+      setJournalEntries(response.data);
+      // console.log("Journal entries: ", journalEntries);
+    });
   });
 
   return (
