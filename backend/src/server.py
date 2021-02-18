@@ -22,7 +22,7 @@ conn = psycopg2.connect(db)
 cur = conn.cursor()
 
 
-@app.route("/v0/journal_entries", methods=['GET', 'PUT'])
+@app.route("/v0/journal_entries", methods=['GET', 'PUT', 'DELETE'])
 def journal_entries():
 
     request_body = request.get_json()
@@ -113,6 +113,30 @@ def journal_entries():
             "message": "Updated"
         }), 204)
 
+
+    if request.method == 'DELETE':
+        if not any([startDate, endDate, userId]):
+            return make_response(jsonify({
+                "message": "Invalid request",
+                "error": "Invalid request body"
+            }), 400)
+
+        query = "".join([
+            "DELETE FROM entry WHERE user_id = ",
+            str(userId),
+            " AND date >= DATE '",
+            startDate,
+            "' AND date <= DATE '",
+            endDate,
+            "';"
+        ])
+
+        cur.execute(query)
+        conn.commit()
+
+        return make_response(jsonify({
+            "message": "Deleted"
+        }), 204)
 
 if __name__ == '__main__':
 
