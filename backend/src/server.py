@@ -74,7 +74,7 @@ def journal_entries():
             }), 400)
 
         date = request_body["date"]
-        user_id = request_body["userId"]
+        userId = request_body["userId"]
         content = request_body["content"]
 
         # Detects the sentiment of the text
@@ -86,7 +86,7 @@ def journal_entries():
 
         query = "".join([
             "SELECT * FROM entry WHERE user_id = ",
-            str(user_id),
+            str(userId),
             " AND date = DATE '",
             date,
             "';"
@@ -98,7 +98,7 @@ def journal_entries():
         # Check if entry exists yet
         if not entry_tuple:
             query = "INSERT INTO entry (user_id, date, content, score) VALUES ({0}, '{1}', '{2}', {3})"
-            cur.execute(query.format(user_id, date, content, score))
+            cur.execute(query.format(userId, date, content, score))
             conn.commit()
 
             return make_response(jsonify({
@@ -106,12 +106,12 @@ def journal_entries():
             }), 201)
 
         query = "UPDATE entry SET content = '{0}', score = {1} WHERE user_id = {2} AND date = '{3}'"
-        cur.execute(query.format(content, score, user_id, date))
+        cur.execute(query.format(content, score, userId, date))
         conn.commit()
 
         return make_response(jsonify({
             "message": "Updated"
-        }), 204)
+        }), 200)
 
 
     if request.method == 'DELETE':
@@ -136,7 +136,7 @@ def journal_entries():
 
         return make_response(jsonify({
             "message": "Deleted"
-        }), 204)
+        }), 200)
 
 if __name__ == '__main__':
 
