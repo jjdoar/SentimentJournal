@@ -9,11 +9,6 @@ import { Button, Box } from "@material-ui/core";
 import "react-calendar/dist/Calendar.css";
 
 function App() {
-  const [value, setValue] = useState(new Date());
-
-  function onChange(value) {
-    setValue(value);
-  }
 
   return (
     <div
@@ -29,7 +24,7 @@ function App() {
         <Button>New</Button>
       </Link>
 
-      <EntryViewer date={value} />
+      <EntryViewer />
     </div>
   );
 }
