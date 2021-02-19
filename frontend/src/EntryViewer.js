@@ -28,13 +28,13 @@ function EntryViewer() {
     return [begin_date, end_date];
   }
 
+
   useEffect(() => {
     axios({
         method: "GET",
         url: "http://localhost:8081/v0/journal_entries",
         params: { startDate: getDates(date)[0], endDate: getDates(date)[1], userId: 1 },
     }).then((response) => {
-        console.log(response.data);
         if (typeof(response.data[0]) !== "undefined") {
             setEntry(response.data[0].content);
         } else {
