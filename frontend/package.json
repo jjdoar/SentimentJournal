@@ -14,7 +14,7 @@
     "react-calendar": "^3.3.0",
     "react-dom": "^17.0.1",
     "react-router-dom": "^5.2.0",
-    "react-scripts": "4.0.1",
+    "react-scripts": "^2.0.5",
     "web-vitals": "^0.2.4"
   },
   "scripts": {

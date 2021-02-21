@@ -1,20 +1,18 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import "./index.css";
-import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
 
-import Cal from "./App";
-import Entry from "./EntrySubmitter";
+import App from "./App";
+import EntrySubmitter from "./EntrySubmitter";
 
 ReactDOM.render(
   <React.StrictMode>
-    {/* <App /> */}
     <BrowserRouter>
       <Switch>
-        <Route exact path="/" component={Cal} />
-        <Route exact path="/entry" component={Entry} />
+        <Route exact path="/" component={App} />
+        <Route exact path="/entrySubmitter" component={EntrySubmitter} />
       </Switch>
     </BrowserRouter>
   </React.StrictMode>,

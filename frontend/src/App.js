@@ -1,12 +1,8 @@
 import "./App.css";
-import EntrySubmitter from "./EntrySubmitter";
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import Calendar from "react-calendar";
-import EntryViewer from "./EntryViewer";
 import { Button, Box } from "@material-ui/core";
-
-import "react-calendar/dist/Calendar.css";
+import CustomCalendar from "./Calendar";
 
 function App() {
 
@@ -20,11 +16,11 @@ function App() {
         textAlign: "center",
       }}
     >
-      <Link to="/entry">
+      <Link to="/entrySubmitter">
         <Button>New</Button>
       </Link>
 
-      <EntryViewer />
+      <CustomCalendar />
     </div>
   );
 }
