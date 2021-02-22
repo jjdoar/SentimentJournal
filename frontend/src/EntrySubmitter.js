@@ -4,8 +4,6 @@ import { Button, TextareaAutosize } from "@material-ui/core";
 import axios from "axios";
 import { formatDateObj } from "./util";
 
-// Implement logic to call retrieveJournalEntries in EntryCache after submitting entry. 
-
 function EntrySubmitter(props) {
   // Component State 
   const [value, setValue] = useState("");
