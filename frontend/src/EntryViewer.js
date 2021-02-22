@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 import "react-calendar/dist/Calendar.css";
 import { formatDateObj } from "./util";
 
@@ -11,8 +11,8 @@ function EntryViewer(props) {
   function getEntry(date, entries) {
     var formattedDate = formatDateObj(date);
     for (let entry in entries) {
-      if (entries[entry]['date'] === formattedDate) {
-        return entries[entry]['content'];
+      if (entries[entry]["date"] === formattedDate) {
+        return entries[entry]["content"];
       }
     }
     return "";
@@ -20,7 +20,7 @@ function EntryViewer(props) {
 
   return (
     <div>
-      <li>{ getEntry(date, entries) }</li>
+      <li>{getEntry(date, entries)}</li>
     </div>
   );
 }

@@ -5,7 +5,6 @@ import { Button } from "@material-ui/core";
 import Calendar from "./Calendar";
 
 function App() {
-
   return (
     <div>
       <Link to="/entrySubmitter">
@@ -14,7 +13,7 @@ function App() {
 
       <Calendar />
     </div>
-    
+
     // <div
     //   style={{
     //     position: "absolute",

@@ -5,13 +5,13 @@ import axios from "axios";
 import { formatDateObj } from "./util";
 
 function EntrySubmitter(props) {
-  // Component State 
+  // Component State
   const [value, setValue] = useState("");
 
   const onChangeEvent = (event) => {
     setValue(event.target.value);
   };
- 
+
   function submitEntry(value) {
     const userId = "1";
     const currentDate = new Date();
@@ -20,11 +20,15 @@ function EntrySubmitter(props) {
     axios({
       method: "PUT",
       url: "http://154.151.49.150:8081/v0/journal_entries",
-      data: { "date": formatDateObj(currentDate), "userId": userId, "content": value },
-    })
+      data: {
+        date: formatDateObj(currentDate),
+        userId: userId,
+        content: value,
+      },
+    });
 
     // Switch back to main page
-    window.location.href='/';
+    window.location.href = "/";
   }
 
   return (
@@ -37,12 +41,12 @@ function EntrySubmitter(props) {
         defaultValue={value}
       />
       <br />
-        <Button color="primary" onClick={() => submitEntry(value)}>
-          Submit
-        </Button>
-        <Link to="/">
-          <Button color="primary">Back</Button>
-        </Link>
+      <Button color="primary" onClick={() => submitEntry(value)}>
+        Submit
+      </Button>
+      <Link to="/">
+        <Button color="primary">Back</Button>
+      </Link>
       <br />
     </div>
   );
