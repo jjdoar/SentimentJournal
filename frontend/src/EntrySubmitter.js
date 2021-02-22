@@ -4,6 +4,7 @@ import { Button, TextareaAutosize } from "@material-ui/core";
 import axios from "axios";
 import { formatDateObj } from "./util";
 
+// Implement logic to call retrieveJournalEntries in EntryCache after submitting entry. 
 
 function EntrySubmitter(props) {
   // Component State 
@@ -20,38 +21,13 @@ function EntrySubmitter(props) {
     // Send PUT request to the backend
     axios({
       method: "PUT",
-      url: "http://localhost:8081/v0/journal_entries",
+      url: "http://154.151.49.150:8081/v0/journal_entries",
       data: { "date": formatDateObj(currentDate), "userId": userId, "content": value },
-    }).then((response) => {
-      console.log(response);
-    });
-  }
+    })
 
-  // return (
-  //   <div>
-  //     <h4>Today is {getTimeandDate()[1]}</h4>
-  //     <p>{getTimeandDate()[0]}</p>
-  //     <div>
-  //       <TextareaAutosize
-  //         rowsMin={5}
-  //         cols={60}
-  //         placeholder="Insert Journal entry here"
-  //         onChange={onChangeEvent}
-  //         defaultValue={value}
-  //       />
-  //       <br />
-  //       <Link to="/">
-  //         <Button color="primary" onClick={() => submitEntry(value)}>
-  //           Submit
-  //         </Button>
-  //       </Link>{" "}
-  //       <Link to="/">
-  //         <Button color="primary">Back</Button>
-  //       </Link>
-  //       <br />
-  //     </div>
-  //   </div>
-  // );
+    // Switch back to main page
+    window.location.href='/';
+  }
 
   return (
     <div>
@@ -63,14 +39,12 @@ function EntrySubmitter(props) {
         defaultValue={value}
       />
       <br />
-         <Link to="/">
-           <Button color="primary" onClick={() => submitEntry(value)}>
-             Submit
-           </Button>
-         </Link>{" "}
-         <Link to="/">
-           <Button color="primary">Back</Button>
-         </Link>
+        <Button color="primary" onClick={() => submitEntry(value)}>
+          Submit
+        </Button>
+        <Link to="/">
+          <Button color="primary">Back</Button>
+        </Link>
       <br />
     </div>
   );
