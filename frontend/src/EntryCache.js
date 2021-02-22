@@ -3,8 +3,6 @@ import React, { useState, useEffect } from 'react';
 import EntryViewer from './EntryViewer';
 import { getFirstDayofMonth, getLastDayofMonth } from "./util";
 
-// Add in logic to only send new get request if new date is in a different month from old date
-
 function EntryCache(props) {
 	// Passed in from parent component(Calendar)
 	const date = props.date;
