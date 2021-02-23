@@ -1,90 +1,53 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { Button, TextareaAutosize } from "@material-ui/core";
 import axios from "axios";
+import { formatDateObj } from "./util";
 
-function EntrySubmitter() {
-  const monthNames = [
-    "January",
-    "February",
-    "March",
-    "April",
-    "May",
-    "June",
-    "July",
-    "August",
-    "September",
-    "October",
-    "November",
-    "December",
-  ];
-
-  const current = new Date();
-  const date = `${
-    monthNames[current.getMonth()]
-  } ${current.getDate()}, ${current.getFullYear()}`;
-
-  const time = `${current.getHours() % 12}:${current.getMinutes()} ${
-    current.getHours() >= 12 ? "PM" : "AM"
-  }`;
-
+function EntrySubmitter(props) {
+  // Component State
   const [value, setValue] = useState("");
 
   const onChangeEvent = (event) => {
     setValue(event.target.value);
   };
 
-  const onHeightChangeEvent = (height) => {
-    console.log("height", height);
-  };
-
-  function submitEntry(value, date) {
+  function submitEntry(value) {
     const userId = "1";
-    // const date = current.getFullYear() + "-" + (current.getMonth() + 1) + "-" + current.getDate()
+    const currentDate = new Date();
 
     // Send PUT request to the backend
     axios({
       method: "PUT",
-      url: "http://54.151.49.150:8081/v0/journal_entries",
-      data: { "date": current.toISOString().substring(0,10), "userId": userId, "content": value },
-    }).then((response) => {
-      console.log(response);
+      url: "http://154.151.49.150:8081/v0/journal_entries",
+      data: {
+        date: formatDateObj(currentDate),
+        userId: userId,
+        content: value,
+      },
     });
-    // Fix Cross origin resource sharing
+
+    // Switch back to main page
+    window.location.href = "/";
   }
 
   return (
-    <div
-      style={{
-        position: "absolute",
-        left: "50%",
-        top: "50%",
-        transform: "translate(-50%, -50%)",
-        textAlign: "center",
-      }}
-    >
-      <h4>Today is {date}</h4>
-      <p>{time}</p>
-      <div>
-        <TextareaAutosize
-          rowsMin={5}
-          cols={60}
-          placeholder="Insert Journal entry here"
-          onChange={onChangeEvent}
-          onHeightChange={onHeightChangeEvent}
-        />
-        <br />
-        <Link to="/">
-          <Button color="primary" onClick={() => submitEntry(value, date)}>
-            Submit
-          </Button>
-        </Link>{" "}
-        <Link to="/">
-          <Button>Back</Button>
-        </Link>
-        <br />
-      </div>
-      {/* <span>{value}</span> */}
+    <div>
+      <TextareaAutosize
+        rowsMin={5}
+        cols={60}
+        placeholder="Insert Journal entry here"
+        onChange={onChangeEvent}
+        defaultValue={value}
+      />
+      <br />
+      <Button color="primary" onClick={() => submitEntry(value)}>
+        Submit
+      </Button>
+      <Link to="/">
+        <Button color="primary">Back</Button>
+      </Link>
+      <br />
     </div>
   );
 }

@@ -1,71 +1,28 @@
-import React, { useState, useEffect } from "react";
-import { Button, TextareaAutosize } from "@material-ui/core";
-import axios from "axios";
+import React from "react";
+import "react-calendar/dist/Calendar.css";
+import { formatDateObj } from "./util";
 
 function EntryViewer(props) {
-  // send GET request
-  console.log(props.date);
+  // Passed in from parent component(EntryCache)
+  const date = props.date;
+  const entries = props.entries;
 
-  var pad = function (num) {
-    return ("00" + num).slice(-2);
-  };
-  var beg_date = props.date;
-  beg_date =
-    beg_date.getUTCFullYear() +
-    "-" +
-    pad(beg_date.getUTCMonth() + 1) +
-    "-" +
-    pad(beg_date.getUTCDate());
-
-  console.log(beg_date);
-
-  var end_date = props.date;
-  end_date =
-    end_date.getUTCFullYear() +
-    "-" +
-    pad(end_date.getUTCMonth() + 1) +
-    "-" +
-    pad(end_date.getUTCDate() + 1);
-
-  console.log(end_date);
-
-  // axios.post("http://127.0.0.1:8081/v0/journal_entries", {
-  //   "startDate": beg_date,
-  //   "endDate": end_date,
-  //   "userId": 1,
-  //   method: "GET"
-  // }).then(response => {
-  //   this.posts = response.data;
-  // }).catch(err => {
-  //   console.log(err);
-  // });
-
-  var journalEntries = {};
-
-  axios({
-    method: "GET",
-    url: "http://154.151.49.150:8081/v0/journal_entries",
-    params: { startDate: beg_date, endDate: end_date, userId: 1 },
-  }).then((response) => {
-    console.log(response);
-    journalEntries = response.data;
-    console.log("Journal entries: ", journalEntries);
-
-
-  });
+  // Returns the journal entry for the given date, empty string if no entry found
+  function getEntry(date, entries) {
+    var formattedDate = formatDateObj(date);
+    for (let entry in entries) {
+      if (entries[entry]["date"] === formattedDate) {
+        return entries[entry]["content"];
+      }
+    }
+    return "";
+  }
 
   return (
     <div>
-      <h2>{props.date.toDateString()}</h2>
-      {/* <h1>{JSON.stringify(entries)}</h1> */}
+      <li>{getEntry(date, entries)}</li>
     </div>
   );
 }
-
-// GET request for some period of time
-
-// Put journal entries in some data structure
-
-// Display entry for the selected date
 
 export default EntryViewer;
