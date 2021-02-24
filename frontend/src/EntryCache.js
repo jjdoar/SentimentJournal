@@ -1,6 +1,7 @@
 import axios from "axios";
 import React, { useState, useEffect } from "react";
 import EntryViewer from "./EntryViewer";
+import EntryDelete from './EntryDelete';
 import { getFirstDayofMonth, getLastDayofMonth } from "./util";
 
 function EntryCache(props) {
@@ -21,12 +22,17 @@ function EntryCache(props) {
       setEntries(response.data);
     });
   }
-
+  
   useEffect(() => {
     retrieveJournalEntries(getFirstDayofMonth(date), getLastDayofMonth(date));
   }, [date]);
 
-  return <EntryViewer date={date} entries={entries} />;
+  return (
+    <>
+      <EntryViewer date={date} entries={entries} />
+      <EntryDelete date={date} entries={entries} retrieveJournalEntries = {retrieveJournalEntries}/>
+    </>
+  );
 }
 
 export default EntryCache;
