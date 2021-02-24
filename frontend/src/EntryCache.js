@@ -1,8 +1,8 @@
 import axios from "axios";
 import React, { useState, useEffect } from "react";
 import EntryViewer from "./EntryViewer";
+import EntryDelete from './EntryDelete';
 import { getFirstDayofMonth, getLastDayofMonth } from "./util";
-import { Button } from "@material-ui/core";
 
 function EntryCache(props) {
   // Passed in from parent component(Calendar)
@@ -22,17 +22,6 @@ function EntryCache(props) {
       setEntries(response.data);
     });
   }
-
-  function deleteJournalEntries(beg_date, end_date) {
-    axios({
-      method: "DELETE",
-      url: "http://154.151.49.150:8081/v0/journal_entries",
-      params: { startDate: beg_date, endDate: end_date, userId: 1 },
-    }).then((response) => {
-      setEntries(response.data);
-      retrieveJournalEntries(beg_date, end_date);
-    })
-  }
   
   useEffect(() => {
     retrieveJournalEntries(getFirstDayofMonth(date), getLastDayofMonth(date));
@@ -40,10 +29,8 @@ function EntryCache(props) {
 
   return (
     <>
-      <EntryViewer date={date} entries={entries} />;
-      <Button color="primary" onClick={() => deleteJournalEntries(getFirstDayofMonth(date), getLastDayofMonth(date))}>
-        Delete
-      </Button>
+      <EntryViewer date={date} entries={entries} />
+      <EntryDelete date={date} entries={entries} retrieveJournalEntries = {retrieveJournalEntries}/>
     </>
   );
 }
