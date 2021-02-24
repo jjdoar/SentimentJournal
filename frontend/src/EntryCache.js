@@ -22,11 +22,29 @@ function EntryCache(props) {
     });
   }
 
+  function deleteJournalEntries(beg_date, end_date) {
+    axios({
+      method: "DELETE",
+      url: "http://154.151.49.150:8081/v0/journal_entries",
+      params: { startDate: beg_date, endDate: end_date, userId: 1 },
+    }).then((response) => {
+      setEntries(response.data);
+      retrieveJournalEntries(beg_date, end_date);
+    })
+  }
+  
   useEffect(() => {
     retrieveJournalEntries(getFirstDayofMonth(date), getLastDayofMonth(date));
   }, [date]);
 
-  return <EntryViewer date={date} entries={entries} />;
+  return (
+    <>
+      <EntryViewer date={date} entries={entries} />;
+      <Button color="primary" onClick={() => deleteJournalEntries(getFirstDayofMonth(date), getLastDayofMonth(date))}>
+        Delete
+      </Button>
+    </>
+  );
 }
 
 export default EntryCache;
