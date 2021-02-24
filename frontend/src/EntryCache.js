@@ -2,6 +2,7 @@ import axios from "axios";
 import React, { useState, useEffect } from "react";
 import EntryViewer from "./EntryViewer";
 import { getFirstDayofMonth, getLastDayofMonth } from "./util";
+import { Button } from "@material-ui/core";
 
 function EntryCache(props) {
   // Passed in from parent component(Calendar)
