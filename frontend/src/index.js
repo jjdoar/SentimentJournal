@@ -3,21 +3,17 @@ import ReactDOM from "react-dom";
 import "./index.css";
 import reportWebVitals from "./reportWebVitals";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
-
+import AuthProvider from './provider/AuthProvider'
 import App from "./App";
-import EntrySubmitter from "./EntrySubmitter";
 
 ReactDOM.render(
-  <React.StrictMode>
-    <BrowserRouter>
-      <Switch>
-        <Route exact path="/" component={App} />
-        <Route exact path="/entrySubmitter" component={EntrySubmitter} />
-      </Switch>
-    </BrowserRouter>
-  </React.StrictMode>,
-  document.getElementById("root")
-);
+  <BrowserRouter>
+    <AuthProvider>
+      <App />
+    </AuthProvider>
+  </BrowserRouter>
+  , document.getElementById('root'));
+  
 
 // If you want to start measuring performance in your app, pass a function
 // to log results (for example: reportWebVitals(console.log))

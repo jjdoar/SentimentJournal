@@ -1,28 +1,26 @@
-import "./App.css";
-import React from "react";
-import { Link } from "react-router-dom";
-import { Button } from "@material-ui/core";
-import Calendar from "./Calendar";
+import React, {useContext} from 'react';
+import {Route, Switch, Redirect} from 'react-router-dom'
+import Signup from './component/Signup'
+import Signin from './component/Signin'
+import Home from './component/Home'
+import logo from './logo.svg';
+import './App.css';
+import {firebaseAuth} from './provider/AuthProvider'
 
 function App() {
+  const { token } = useContext(firebaseAuth)
+  console.log(token)
   return (
-    <div>
-      <Link to="/entrySubmitter">
-        <Button>New</Button>
-      </Link>
+    <>
+    {/* switch allows switching which components render.  */}
+      <Switch>
+        {/* route allows you to render by url path */}
 
-      <Calendar />
-    </div>
-
-    // <div
-    //   style={{
-    //     position: "absolute",
-    //     left: "50%",
-    //     top: "50%",
-    //     transform: "translate(-50%, -50%)",
-    //     textAlign: "center",
-    //   }}
-    // >
+        <Route exact path='/' render={rProps => token === null ? <Signin /> : <Home />} />
+        <Route exact path='/signin' component={Signin} />
+        <Route exact path='/signup' component={Signup} />
+      </Switch>
+    </>
   );
 }
 
