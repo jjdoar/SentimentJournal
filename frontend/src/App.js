@@ -2,6 +2,7 @@ import React, {useContext} from 'react';
 import {Route, Switch, Redirect} from 'react-router-dom'
 import Signup from './component/Signup'
 import Signin from './component/Signin'
+import EntrySubmitter from './component/EntrySubmitter';
 import Home from './component/Home'
 import logo from './logo.svg';
 import './App.css';
@@ -17,6 +18,7 @@ function App() {
         {/* route allows you to render by url path */}
 
         <Route exact path='/' render={rProps => token === null ? <Signin /> : <Home />} />
+        <Route exact path='/entrySubmitter' component={EntrySubmitter} />
         <Route exact path='/signin' component={Signin} />
         <Route exact path='/signup' component={Signup} />
       </Switch>
