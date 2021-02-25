@@ -1,6 +1,8 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { Button } from "@material-ui/core";
+import { Button, Box, Popover } from "@material-ui/core";
+import SearchBackgrounds from "./BackgroundPicker.js";
+import PopupState, { bindTrigger, bindPopover } from 'material-ui-popup-state';
 import Calendar from "./Calendar";
 
 function Home() {
