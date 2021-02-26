@@ -4,18 +4,21 @@ import axios from "axios";
 
 export const authMethods = {
   // firebase helper methods go here... 
-  signup: (email, password, setErrors,setToken ) => {
+  signup: (email, password, setErrors, setToken, setUID) => {
     firebase.auth().createUserWithEmailAndPassword(email,password) 
       //make res asynchonous so that we can make grab the token before saving it.
       .then( async res => {
-        console.log(res.user.uid);
         axios({
           method: "PUT",
-          url: "http://154.151.49.150:8081/v0/journal_entries",
+          url: "http://0.0.0.0:8081/v0/journal_entries",
           data: {
             userId: res.user.uid,
           },
-        });
+        }).catch(err => {
+	   setErrors(console.log(err.message))
+	});
+
+	setUID(res.user.uid)
 
         const token = await Object.entries(res.user)[5][1].b
         //set token to localStorage 
@@ -28,12 +31,12 @@ export const authMethods = {
         setErrors(prev => ([...prev, err.message]))
       })
     },
-  signin: (email, password, setErrors, setToken) => {
+  signin: (email, password, setErrors, setToken, setUID) => {
     //change from create users to...
     firebase.auth().signInWithEmailAndPassword(email, password) 
       //everything is almost exactly the same as the function above
       .then( async res => {
-        console.log(res.user.uid);
+        setUID(res.user.uid)
         const token = await Object.entries(res.user)[5][1].b
           //set token to localStorage 
           await localStorage.setItem('token', token)
