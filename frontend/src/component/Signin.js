@@ -25,8 +25,8 @@ const Signin = () => {
       {/* replace the div tags with a form tag */}
       Signin
       {/* make inputs  */}
-      <input onChange={handleChange} name="email" placeholder='email' value={inputs.email} />
-      <input onChange={handleChange} name="password" placeholder='password' value={inputs.password} />
+      <input onChange={handleChange} type="text" name="email" placeholder='email' value={inputs.email} />
+      <input onChange={handleChange} type="password" name="password" placeholder='password' value={inputs.password} />
       <button>signin</button>
       {errors.length > 0 ? errors.map(error => <p style={{color: 'red'}}>{error}</p> ) : null}
     </form>
