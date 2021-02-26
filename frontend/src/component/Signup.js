@@ -1,11 +1,13 @@
 
 // add useContext
 import React, {useContext} from 'react';
-import {firebaseAuth} from '../provider/AuthProvider'
-import {withRouter} from 'react-router-dom'
+import {firebaseAuth} from '../provider/AuthProvider';
+import {withRouter} from 'react-router-dom';
+import { makeStyles } from "@material-ui/core/styles";
+import { Card, CardHeader, CardContent, CardActions,
+  TextField, Button, Grid } from "@material-ui/core";
 
 const Signup = (props) => {
-
 
   const {handleSignup, inputs, setInputs, errors} = useContext(firebaseAuth)
   
@@ -22,17 +24,47 @@ const Signup = (props) => {
     console.log(inputs)
     setInputs(prev => ({...prev, [name]: value}))
   }
+  
+  const useStyles = makeStyles({
+    button: {
+      textTransform: 'none',
+    }
+  });
+
+  const classes = useStyles();
 
   return (
-    <form onSubmit={handleSubmit}>
-      {/* replace the div tags with a form tag */}
-      Signup
-      {/* make inputs  */}
-      <input onChange={handleChange} type="text" name="email" placeholder='email' value={inputs.email} />
-      <input onChange={handleChange} type="password" name="password" placeholder='password' value={inputs.password} />
-      <button>signup</button>
-      {errors.length > 0 ? errors.map(error => <p style={{color: 'red'}}>{error}</p> ) : null}
-    </form>
+    <Grid
+      container
+      spacing={0}
+      direction="column"
+      alignItems="center"
+      justify="center"
+      style={{ minHeight: '100vh' }}><Grid item xs={3}>
+        <Card>
+          <CardHeader>
+          {/* replace the div tags with a form tag */}
+          Signup
+          {/* make inputs  */}
+          </CardHeader>
+          <form onSubmit={handleSubmit}>
+          <CardContent>
+            <TextField onChange={handleChange} type="text" name="email" value={inputs.email}
+              id="outlined-basic" label="Email" variant="outlined" size="small" />
+          </CardContent>
+          <CardContent>
+            <TextField onChange={handleChange} type="password" name="password" value={inputs.password}
+              id="outlined-basic" label="Password" variant="outlined" size="small" />
+          </CardContent>
+          {errors.length > 0 ? errors.map(error => <p style={{color: 'red'}}>{error}</p>) : null}
+          <CardActions>
+            <Button type="submit" size="small" className={classes.button}
+              variant="contained" color="primary">Sign Up
+            </Button>
+          </CardActions>
+        </form>
+      </Card>
+    </Grid></Grid>
   );
 };
 
