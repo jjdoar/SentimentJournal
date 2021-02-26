@@ -59,7 +59,7 @@ const Signin = () => {
         </CardContent>
         <CardActions>
           <Button type="submit" size="small" className={classes.button}
-            variant="contained" color="primary">Sign In
+            variant="contained" color="primary">Log In
           </Button>
         </CardActions>
       </form>
