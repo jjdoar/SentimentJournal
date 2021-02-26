@@ -59,7 +59,7 @@ header {
 .calendar {
   display: block;
   position: relative;
-  width: 50%;
+  width: 45em;
   background: white;
   opacity: 0.85;
   border: 1px solid lightgray;
