@@ -27,10 +27,10 @@ def journal_entries():
 
     request_body = request.get_json()
     print(request_body)
-    startDate = request.args.get("startDate")
-    endDate = request.args.get("endDate")
+    #startDate = request.args.get("startDate")
+    #endDate = request.args.get("endDate")
     userId = request.args.get("userId")
-    print(startDate, endDate, userId)
+    #print(startDate, endDate, userId)
 
     if request.method == 'GET':
 
@@ -42,7 +42,7 @@ def journal_entries():
 
         query = "".join([
             "SELECT * FROM entry WHERE user_id = ",
-            str(userId),
+            userId,
             " AND date >= DATE '",
             startDate,
             "' AND date <= DATE '",
@@ -60,15 +60,21 @@ def journal_entries():
             journal_entry["date"] = str(entry_tuple[1])
             journal_entry["time"] = str(entry_tuple[2])
             journal_entry["content"] = entry_tuple[3]
-            journal_entry["userId"] = entry_tuple[4]
+            journal_entry["userId"] = str(entry_tuple[4])
             journal_entry["score"] = entry_tuple[5]
             journal_entries.append(journal_entry)
 
         return make_response(jsonify(journal_entries), 200)
 
     if request.method == 'PUT':
-        if not request_body or not request_body.keys() == {"userId"}
-            or not request_body.keys() == {"date", "userId", "content"}:
+
+        print(request_body.keys() == {"userId"})
+        print(request_body.keys() == {"date", "userId", "content"})
+        print(not request_body)
+        print(request_body)
+
+        if not request_body or not (request_body.keys() == {"userId"}
+            or request_body.keys() == {"date", "userId", "content"}):
             return make_response(jsonify({
                 "message": "Invalid request",
                 "error": "Invalid request body"
@@ -76,12 +82,11 @@ def journal_entries():
 
         if request_body.keys() == {"userId"}:
             userId = request_body["userId"]
-            query = "INSERT INTO users (user_id) VALUES ({0})"
-            cur.execute(query.format(userId)
+            print("userId", userId, flush=True)
+            query = "INSERT INTO users (id) VALUES ('{0}')"
+            cur.execute(query.format(userId))
             conn.commit()
-            return make_response(jsonify({
-                    "message": "Created"
-            }), 201)
+            return make_response(jsonify({ "message": "Created" }), 201)
 
         if request_body.keys() == {"date", "userId", "content"}:
             date = request_body["date"]
@@ -96,9 +101,9 @@ def journal_entries():
             score = round(sentiment.score, 3)
 
             query = "".join([
-                "SELECT * FROM entry WHERE user_id = ",
-                str(userId),
-                " AND date = DATE '",
+                "SELECT * FROM entry WHERE user_id = '",
+                userId,
+                "' AND date = DATE '",
                 date,
                 "';"
             ])
@@ -108,7 +113,7 @@ def journal_entries():
 
             # Check if entry exists yet
             if not entry_tuple:
-                query = "INSERT INTO entry (user_id, date, content, score) VALUES ({0}, '{1}', '{2}', {3})"
+                query = "INSERT INTO entry (user_id, date, content, score) VALUES ('{0}', '{1}', '{2}', {3})"
                 cur.execute(query.format(userId, date, content, score))
                 conn.commit()
 
@@ -116,7 +121,7 @@ def journal_entries():
                     "message": "Created"
                 }), 201)
 
-            query = "UPDATE entry SET content = '{0}', score = {1} WHERE user_id = {2} AND date = '{3}'"
+            query = "UPDATE entry SET content = '{0}', score = {1} WHERE user_id = '{2}' AND date = '{3}'"
             cur.execute(query.format(content, score, userId, date))
             conn.commit()
 
@@ -134,7 +139,7 @@ def journal_entries():
 
         query = "".join([
             "DELETE FROM entry WHERE user_id = ",
-            str(userId),
+            userId,
             " AND date >= DATE '",
             startDate,
             "' AND date <= DATE '",
