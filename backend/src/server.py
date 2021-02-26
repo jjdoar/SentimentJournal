@@ -41,9 +41,9 @@ def journal_entries():
             }), 400)
 
         query = "".join([
-            "SELECT * FROM entry WHERE user_id = ",
+            "SELECT * FROM entry WHERE user_id = '",
             userId,
-            " AND date >= DATE '",
+            "' AND date >= DATE '",
             startDate,
             "' AND date <= DATE '",
             endDate,
@@ -68,11 +68,6 @@ def journal_entries():
 
     if request.method == 'PUT':
 
-        print(request_body.keys() == {"userId"})
-        print(request_body.keys() == {"date", "userId", "content"})
-        print(not request_body)
-        print(request_body)
-
         if not request_body or not (request_body.keys() == {"userId"}
             or request_body.keys() == {"date", "userId", "content"}):
             return make_response(jsonify({
@@ -82,7 +77,6 @@ def journal_entries():
 
         if request_body.keys() == {"userId"}:
             userId = request_body["userId"]
-            print("userId", userId, flush=True)
             query = "INSERT INTO users (id) VALUES ('{0}')"
             cur.execute(query.format(userId))
             conn.commit()
@@ -138,9 +132,9 @@ def journal_entries():
             }), 400)
 
         query = "".join([
-            "DELETE FROM entry WHERE user_id = ",
+            "DELETE FROM entry WHERE user_id = '",
             userId,
-            " AND date >= DATE '",
+            "' AND date >= DATE '",
             startDate,
             "' AND date <= DATE '",
             endDate,
