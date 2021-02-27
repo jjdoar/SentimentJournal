@@ -27,9 +27,6 @@ function EntrySubmitter(props) {
         content: value,
       },
     });
-
-    // Switch back to main page
-    window.location.href = "/";
   }
 
   return (
@@ -42,10 +39,10 @@ function EntrySubmitter(props) {
         defaultValue={value}
       />
       <br />
-      <Button color="primary" onClick={() => submitEntry(value)}>
-        Submit
-      </Button>
       <Link to="/">
+        <Button color="primary" onClick={() => submitEntry(value)}>
+           Submit
+        </Button>
         <Button color="primary">Back</Button>
       </Link>
       <br />
