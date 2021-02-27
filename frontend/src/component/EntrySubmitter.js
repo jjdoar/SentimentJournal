@@ -8,7 +8,7 @@ import { useAuth } from "../provider/AuthProvider";
 function EntrySubmitter(props) {
   // Component State
   const [value, setValue] = useState("");
-  const { uid } = useAuth();
+  const { inputs } = useAuth();
 
   const onChangeEvent = (event) => {
     setValue(event.target.value);
@@ -23,7 +23,7 @@ function EntrySubmitter(props) {
       url: "http://0.0.0.0:8081/v0/journal_entries",
       data: {
         date: formatDateObj(currentDate),
-        userId: uid,
+        userId: inputs.uid,
         content: value,
       },
     });

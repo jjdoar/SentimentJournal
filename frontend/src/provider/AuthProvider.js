@@ -12,23 +12,21 @@ const AuthProvider = (props) => {
   const [inputs, setInputs] = useState(initState)
   const [errors, setErrors] = useState([])
   const [token, setToken] = useState(null)
-  const [uid, setUID] = useState("")
-  const [name, setName] = useState("")
 
   const handleSignup = () => {
 
     // middle man between firebase and signup 
     console.log('handleSignup')
     // calling signup from firebase server
-    authMethods.signup(inputs.email, inputs.password, inputs.name, setErrors, setToken, setUID)
-    console.log(errors, token, uid, inputs.name)
+    authMethods.signup(inputs.email, inputs.password, inputs.name, setErrors, setToken, setInputs)
+    console.log(errors, token)
   }
   const handleSignin = () => {
     //changed to handleSingin
     console.log('handleSignin!!!!')
     // made signup signin
-    authMethods.signin(inputs.email, inputs.password, setErrors, setToken, setUID, setInputs)
-    console.log(errors, token, uid, inputs.name)
+    authMethods.signin(inputs.email, inputs.password, setErrors, setToken, setInputs)
+    console.log(errors, token)
   }
 
   const handleSignout = () => {
@@ -43,7 +41,6 @@ const AuthProvider = (props) => {
       handleSignin,
       token,
       inputs,
-      uid,
       setInputs,
       errors,
       handleSignout,
