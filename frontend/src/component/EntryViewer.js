@@ -20,7 +20,7 @@ function EntryViewer(props) {
 
   return (
     <div>
-      <li>{getEntry(date, entries)}</li>
+      <p>{getEntry(date, entries)}</p>
     </div>
   );
 }
