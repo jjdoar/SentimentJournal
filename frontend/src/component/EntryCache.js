@@ -12,13 +12,13 @@ function EntryCache(props) {
   // Component state
   const [entries, setEntries] = useState({});
 
-  const { uid } = useAuth();
+  const { inputs } = useAuth();
 
   function retrieveJournalEntries(beg_date, end_date) {
     axios({
       method: "GET",
       url: "http://0.0.0.0:8081/v0/journal_entries",
-      params: { startDate: beg_date, endDate: end_date, userId: uid},
+      params: { startDate: beg_date, endDate: end_date, userId: inputs.uid},
     }).then((response) => {
       console.log("Entry Chache: ");
       console.log(response.data);

@@ -26,13 +26,12 @@ cur = conn.cursor()
 def journal_entries():
 
     request_body = request.get_json()
-    print(request_body)
     startDate = request.args.get("startDate")
     endDate = request.args.get("endDate")
     userId = request.args.get("userId")
-    print(startDate, endDate, userId)
 
     if request.method == 'GET':
+        print(startDate, endDate, userId)
 
         # Check if logging in
         if userId and not (startDate and endDate):
@@ -50,17 +49,17 @@ def journal_entries():
                 "error": "Invalid request body"
             }), 400)
 
-        query = "".join([
-            "SELECT * FROM entry WHERE user_id = '",
-            userId,
-            "' AND date >= DATE '",
-            startDate,
-            "' AND date <= DATE '",
-            endDate,
-            "';"
-        ])
-
-        cur.execute(query)
+        #query = "".join([
+        #    "SELECT * FROM entry WHERE user_id = '",
+        #    str(userId),
+        #    "' AND date >= DATE '",
+        #    startDate,
+        #    "' AND date <= DATE '",
+        #    endDate,
+        #    "';"
+        #])
+        query = "SELECT * FROM entry WHERE user_id = '{0}' AND date >= DATE '{1}' AND date <= DATE '{2}'"
+        cur.execute(query.format(userId, startDate, endDate))
         entry_tuples = cur.fetchall()
 
         journal_entries = []
@@ -77,6 +76,7 @@ def journal_entries():
         return make_response(jsonify(journal_entries), 200)
 
     if request.method == 'PUT':
+        print(request_body)
 
         # Check if wrong input
         if not request_body or not (request_body.keys() == {"userId", "name"}
@@ -130,6 +130,7 @@ def journal_entries():
                 }), 201)
 
             query = "UPDATE entry SET content = '{0}', score = {1} WHERE user_id = '{2}' AND date = '{3}'"
+            print(query)
             cur.execute(query.format(content, score, userId, date))
             conn.commit()
 
