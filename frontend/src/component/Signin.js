@@ -6,6 +6,7 @@ import {firebaseAuth} from '../provider/AuthProvider';
 import { makeStyles } from "@material-ui/core/styles";
 import { Card, CardHeader, CardContent, CardActions,
   TextField, Button, Grid } from "@material-ui/core";
+import { Alert } from "@material-ui/lab";
 
 const Signin = () => {
 
@@ -56,7 +57,8 @@ const Signin = () => {
             id="outlined-basic" label="Password" variant="outlined" size="small" />
         </CardContent>
         <CardContent>
-          {errors.length > 0 ? errors.map(error => <p style={{color: 'red'}}>{error}</p>) : null}
+          {errors.length > 0 ? errors.map(error =>
+		  <Alert severity="error">{error}</Alert>) : null}
         </CardContent>
         <CardActions>
           <Button type="submit" size="small" className={classes.button}

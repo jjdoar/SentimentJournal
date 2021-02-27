@@ -19,7 +19,10 @@ export const authMethods = {
 	   setErrors(console.log(err.message))
 	});
 
-	setInputs({ uid: res.user.uid })
+	setInputs({
+		uid: res.user.uid,
+		name: name
+	})
 
         const token = await Object.entries(res.user)[5][1].b
         //set token to localStorage 
