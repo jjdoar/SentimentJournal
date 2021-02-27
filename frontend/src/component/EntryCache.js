@@ -3,6 +3,7 @@ import React, { useState, useEffect } from "react";
 import EntryViewer from "./EntryViewer";
 import EntryDelete from './EntryDelete';
 import { getFirstDayofMonth, getLastDayofMonth } from "./util";
+import { useAuth } from "../provider/AuthProvider";
 
 function EntryCache(props) {
   // Passed in from parent component(Calendar)
@@ -11,11 +12,13 @@ function EntryCache(props) {
   // Component state
   const [entries, setEntries] = useState({});
 
+  const { inputs } = useAuth();
+
   function retrieveJournalEntries(beg_date, end_date) {
     axios({
       method: "GET",
-      url: "http://154.151.49.150:8081/v0/journal_entries",
-      params: { startDate: beg_date, endDate: end_date, userId: 1 },
+      url: "http://0.0.0.0:8081/v0/journal_entries",
+      params: { startDate: beg_date, endDate: end_date, userId: inputs.uid},
     }).then((response) => {
       console.log("Entry Chache: ");
       console.log(response.data);

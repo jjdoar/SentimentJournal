@@ -4,8 +4,11 @@ import { Button, Box, Popover } from "@material-ui/core";
 import SearchBackgrounds from "./BackgroundPicker.js";
 import PopupState, { bindTrigger, bindPopover } from 'material-ui-popup-state';
 import Calendar from "./Calendar";
+import { useAuth } from "../provider/AuthProvider";
 
 function Home() {
+  const { inputs } = useAuth();
+
   return (
     <>
       <PopupState variant="popover" popupId="demo-popup-popover">
@@ -36,7 +39,7 @@ function Home() {
         <Link to="/entrySubmitter">
           <Button>New</Button>
         </Link>
-
+        <p>{inputs.name}</p>
         <Calendar />
       </div>
     </>
