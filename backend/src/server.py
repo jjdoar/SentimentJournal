@@ -27,12 +27,22 @@ def journal_entries():
 
     request_body = request.get_json()
     print(request_body)
-    #startDate = request.args.get("startDate")
-    #endDate = request.args.get("endDate")
+    startDate = request.args.get("startDate")
+    endDate = request.args.get("endDate")
     userId = request.args.get("userId")
-    #print(startDate, endDate, userId)
+    print(startDate, endDate, userId)
 
     if request.method == 'GET':
+
+        # Check if logging in
+        if userId and not (startDate and endDate):
+            query = "SELECT * FROM users WHERE id = '{0}'"
+            cur.execute(query.format(userId))
+            users = cur.fetchall()
+            for user in users:
+                name = str(user[1])
+            print(name)
+            return make_response(jsonify(users), 200)
 
         if not any([startDate, endDate, userId]):
             return make_response(jsonify({
@@ -68,24 +78,29 @@ def journal_entries():
 
     if request.method == 'PUT':
 
-        if not request_body or not (request_body.keys() == {"userId"}
+        # Check if wrong input
+        if not request_body or not (request_body.keys() == {"userId", "name"}
             or request_body.keys() == {"date", "userId", "content"}):
             return make_response(jsonify({
                 "message": "Invalid request",
                 "error": "Invalid request body"
             }), 400)
 
-        if request_body.keys() == {"userId"}:
+        # Check if signing up
+        if request_body.keys() == {"userId", "name"}:
             userId = request_body["userId"]
-            query = "INSERT INTO users (id) VALUES ('{0}')"
-            cur.execute(query.format(userId))
+            name = request_body["name"]
+            query = "INSERT INTO users (id, name) VALUES ('{0}', '{1}')"
+            cur.execute(query.format(userId, name))
             conn.commit()
             return make_response(jsonify({ "message": "Created" }), 201)
 
+        # Check if putting in new entry
         if request_body.keys() == {"date", "userId", "content"}:
             date = request_body["date"]
             userId = request_body["userId"]
             content = request_body["content"]
+            print(date, userId, content)
 
             # Detects the sentiment of the text
             document = language_v1.Document(
@@ -99,10 +114,9 @@ def journal_entries():
                 userId,
                 "' AND date = DATE '",
                 date,
-                "';"
+                "'"
             ])
-
-            cur.execute(query)
+            cur.execute(query.format(userId, date))
             entry_tuple = cur.fetchall()
 
             # Check if entry exists yet

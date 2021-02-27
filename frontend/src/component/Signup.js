@@ -2,7 +2,7 @@
 // add useContext
 import React, {useContext} from 'react';
 import {firebaseAuth} from '../provider/AuthProvider';
-import {withRouter} from 'react-router-dom';
+import { withRouter, Link } from 'react-router-dom';
 import { makeStyles } from "@material-ui/core/styles";
 import { Card, CardHeader, CardContent, CardActions,
   TextField, Button, Grid } from "@material-ui/core";
@@ -49,6 +49,10 @@ const Signup = (props) => {
           </CardHeader>
           <form onSubmit={handleSubmit}>
           <CardContent>
+            <TextField onChange={handleChange} type="text" name="name" value={inputs.name}
+              id="outlined-basic" label="Name" variant="outlined" size="small" />
+          </CardContent>
+          <CardContent>
             <TextField onChange={handleChange} type="text" name="email" value={inputs.email}
               id="outlined-basic" label="Email" variant="outlined" size="small" />
           </CardContent>
@@ -61,6 +65,10 @@ const Signup = (props) => {
             <Button type="submit" size="small" className={classes.button}
               variant="contained" color="primary">Sign Up
             </Button>
+            <Link to="/signin">
+              <Button size="small" className={classes.button}
+                variant="contained" color="primary">Sign In</Button>
+            </Link>
           </CardActions>
         </form>
       </Card>

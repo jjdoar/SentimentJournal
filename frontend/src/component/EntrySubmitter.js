@@ -15,7 +15,6 @@ function EntrySubmitter(props) {
   };
 
   function submitEntry(value) {
-    const userId = uid;
     const currentDate = new Date();
 
     // Send PUT request to the backend
@@ -24,7 +23,7 @@ function EntrySubmitter(props) {
       url: "http://0.0.0.0:8081/v0/journal_entries",
       data: {
         date: formatDateObj(currentDate),
-        userId: userId,
+        userId: uid,
         content: value,
       },
     });

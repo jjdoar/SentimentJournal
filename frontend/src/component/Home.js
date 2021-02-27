@@ -39,7 +39,7 @@ function Home() {
         <Link to="/entrySubmitter">
           <Button>New</Button>
         </Link>
-        <p>{inputs.email}</p>
+        <p>{inputs.name}</p>
         <Calendar />
       </div>
     </>

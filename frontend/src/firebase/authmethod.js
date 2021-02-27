@@ -4,7 +4,7 @@ import axios from "axios";
 
 export const authMethods = {
   // firebase helper methods go here... 
-  signup: (email, password, setErrors, setToken, setUID) => {
+  signup: (email, password, name, setErrors, setToken, setUID) => {
     firebase.auth().createUserWithEmailAndPassword(email,password) 
       //make res asynchonous so that we can make grab the token before saving it.
       .then( async res => {
@@ -13,6 +13,7 @@ export const authMethods = {
           url: "http://0.0.0.0:8081/v0/journal_entries",
           data: {
             userId: res.user.uid,
+	    name: name
           },
         }).catch(err => {
 	   setErrors(console.log(err.message))
@@ -31,12 +32,24 @@ export const authMethods = {
         setErrors(prev => ([...prev, err.message]))
       })
     },
-  signin: (email, password, setErrors, setToken, setUID) => {
+  signin: (email, password, setErrors, setToken, setUID, setInputs) => {
     //change from create users to...
     firebase.auth().signInWithEmailAndPassword(email, password) 
       //everything is almost exactly the same as the function above
       .then( async res => {
         setUID(res.user.uid)
+	axios({
+		method: "GET",
+		url: "http://0.0.0.0:8081/v0/journal_entries",
+		params: {
+			userId: res.user.uid,
+		},
+	}).then(response => {
+		for (let user in response.data) {
+			setInputs({ name: response.data["0"]["1"] }) 
+		}
+	});
+
         const token = await Object.entries(res.user)[5][1].b
           //set token to localStorage 
           await localStorage.setItem('token', token)
