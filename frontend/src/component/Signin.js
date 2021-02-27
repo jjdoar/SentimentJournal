@@ -1,6 +1,7 @@
 
 // add useContext
 import React, {useContext} from 'react';
+import { Link } from "react-router-dom";
 import {firebaseAuth} from '../provider/AuthProvider';
 import { makeStyles } from "@material-ui/core/styles";
 import { Card, CardHeader, CardContent, CardActions,
@@ -59,9 +60,12 @@ const Signin = () => {
         </CardContent>
         <CardActions>
           <Button type="submit" size="small" className={classes.button}
-            variant="contained" color="primary">Log In
-          </Button>
-        </CardActions>
+            variant="contained" color="primary">Log In</Button>
+          <Link to="/signup">
+            <Button size="small" className={classes.button}
+	      variant="contained" color="primary">Sign Up</Button>
+          </Link>
+	</CardActions>
       </form>
     </Card>
     </Grid></Grid>
