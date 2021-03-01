@@ -7,6 +7,7 @@ from flask import Flask, request, jsonify, make_response
 from flask_cors import CORS
 from datetime import datetime
 from google.cloud import language_v1
+import re
 
 client = language_v1.LanguageServiceClient()
 
@@ -100,6 +101,11 @@ def journal_entries():
             date = request_body["date"]
             userId = request_body["userId"]
             content = request_body["content"]
+
+            # replace all single quotes in content string with double single quotes
+            newcontent = re.sub('\'', '\'\'', content)
+            print(newcontent)
+
             print(date, userId, content)
 
             # Detects the sentiment of the text
@@ -121,7 +127,7 @@ def journal_entries():
 
             # Check if entry exists yet
             if not entry_tuple:
-                query = "INSERT INTO entry (user_id, date, content, score) VALUES ('{0}', '{1}', '{2}', {3})"
+                query = f"INSERT INTO entry (user_id, date, content, score) VALUES ('{userId}', '{date}', '{newcontent}', {score})"
                 cur.execute(query.format(userId, date, content, score))
                 conn.commit()
 
@@ -131,7 +137,7 @@ def journal_entries():
 
             query = "UPDATE entry SET content = '{0}', score = {1} WHERE user_id = '{2}' AND date = '{3}'"
             print(query)
-            cur.execute(query.format(content, score, userId, date))
+            cur.execute(query.format(newcontent, score, userId, date))
             conn.commit()
 
             return make_response(jsonify({
