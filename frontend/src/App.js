@@ -1,26 +1,29 @@
-import React, {useContext} from 'react';
-import {Route, Switch, Redirect} from 'react-router-dom'
-import Signup from './component/Signup'
-import Signin from './component/Signin'
-import EntrySubmitter from './component/EntrySubmitter';
-import Home from './component/Home'
-import logo from './logo.svg';
-import './App.css';
-import {firebaseAuth} from './provider/AuthProvider'
+import React, { useContext } from "react";
+import { Route, Switch, Redirect } from "react-router-dom";
+import Signup from "./component/Signup";
+import Signin from "./component/Signin";
+import EntrySubmitter from "./component/EntrySubmitter";
+import Home from "./component/Home";
+import logo from "./logo.svg";
+import "./App.css";
+import { firebaseAuth } from "./provider/AuthProvider";
 
 function App() {
-  const { token } = useContext(firebaseAuth)
-  console.log(token)
+  const { token } = useContext(firebaseAuth);
+  console.log(token);
   return (
     <>
-    {/* switch allows switching which components render.  */}
+      {/* switch allows switching which components render.  */}
       <Switch>
         {/* route allows you to render by url path */}
 
-        <Route exact path='/' render={rProps => token === null ? <Signin /> : <Home />} />
-        <Route exact path='/entrySubmitter' component={EntrySubmitter} />
-        <Route exact path='/signin' component={Signin} />
-        <Route exact path='/signup' component={Signup} />
+        <Route
+          exact
+          path="/"
+          render={(rProps) => (token === null ? <Signin /> : <Home />)}
+        />
+        <Route exact path="/signin" component={Signin} />
+        <Route exact path="/signup" component={Signup} />
       </Switch>
     </>
   );

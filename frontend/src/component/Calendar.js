@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import {
   toDate,
   format,
@@ -14,10 +14,14 @@ import {
 } from "date-fns";
 import EntryCache from "./EntryCache";
 import "./Calendar.css";
+import { formatDateObj } from "./util";
+import { EntryContext } from "./Home";
 
 function Calendar(props) {
   // Component state
   const [date, setDate] = useState(new Date());
+  // Shared context(Created in home)
+  const { entries } = useContext(EntryContext);
 
   function header() {
     const dateFormat = "MMMM yyyy";
@@ -69,8 +73,10 @@ function Calendar(props) {
       for (let i = 0; i < 7; i++) {
         formattedDate = format(day, dateFormat);
         const cloneDay = day;
+        var cellId = formatDateObj(day);
         days.push(
           <div
+            id={cellId}
             className={`column cell ${
               !isSameMonth(day, monthStart)
                 ? "disabled"
@@ -107,6 +113,34 @@ function Calendar(props) {
   function onDateClick(day) {
     setDate(day);
   }
+
+  function colorCells() {
+    if (entries !== "Empty") {
+      for (let entry in entries) {
+        var cellColor = calcColor(entries[entry]["score"]);
+        // console.log(cellColor);
+        document.getElementById(
+          entries[entry]["date"]
+        ).style.background = cellColor;
+      }
+    }
+  }
+
+  function calcColor(score) {
+    // Return a color corresponding to the given mood score
+    var redScore = 255;
+    var greenScore = 255;
+    if (score >= 0) {
+      redScore = 255 - Math.floor(255 * score);
+    } else {
+      greenScore = 255 + Math.floor(255 * score);
+    }
+    return "rgb(" + redScore + ", " + greenScore + ", 0)";
+  }
+
+  useEffect(() => {
+    colorCells();
+  }, [entries]);
 
   return (
     <div>
