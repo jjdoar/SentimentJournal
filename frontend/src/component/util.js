@@ -1,4 +1,4 @@
-export function pad(num) {
+function pad(num) {
   return ("00" + num).slice(-2);
 }
 
