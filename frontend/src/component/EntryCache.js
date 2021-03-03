@@ -5,7 +5,7 @@ import EntryDelete from "./EntryDelete";
 import { getFirstDayofMonth, getLastDayofMonth } from "./util";
 import { useAuth } from "../provider/AuthProvider";
 import { EntryContext } from "./Home";
-import '../styles.css';
+import "../styles.css";
 
 function EntryCache(props) {
   // Passed in from parent component(Calendar)
@@ -22,7 +22,7 @@ function EntryCache(props) {
   function retrieveJournalEntries(beg_date, end_date) {
     axios({
       method: "GET",
-      url: "http://0.0.0.0:8081/v0/journal_entries",
+      url: "http://127.0.0.1:8081/v0/journal_entries",
       params: { startDate: beg_date, endDate: end_date, userId: inputs.uid },
     }).then((response) => {
       setEntries(response.data);
@@ -45,7 +45,6 @@ function EntryCache(props) {
           retrieveJournalEntries={retrieveJournalEntries}
         />
       </div>
-      
     </>
   );
 }

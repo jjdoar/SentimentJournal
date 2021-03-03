@@ -49,7 +49,7 @@ function EntrySubmitter(props) {
 
     axios({
       method: "GET",
-      url: "http://0.0.0.0:8081/v0/journal_entries",
+      url: "http://127.0.0.1:8081/v0/journal_entries",
       params: { startDate: beg_date, endDate: end_date, userId: inputs.uid },
     }).then((response) => {
       console.log("Spark Entries: ");
@@ -75,7 +75,7 @@ function EntrySubmitter(props) {
     // Send PUT request to the backend
     axios({
       method: "PUT",
-      url: "http://0.0.0.0:8081/v0/journal_entries",
+      url: "http://127.0.0.1:8081/v0/journal_entries",
       data: {
         date: formatDateObj(currentDate),
         userId: inputs.uid,
