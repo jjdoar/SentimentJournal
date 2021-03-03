@@ -9,3 +9,18 @@
 .red {
   color: crimson;
 }
+
+.mdeditor {
+  display: block;
+  position: relative;
+  width: 45em;
+  height: auto;
+  margin: 0 auto;
+}
+.button {
+  display: block;
+  position: relative;
+  width: 45em;
+  height: auto;
+  margin: 0 auto;
+}

@@ -10,6 +10,8 @@ import DialogContent from "@material-ui/core/DialogContent";
 import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import Slide from "@material-ui/core/Slide";
+import MDEditor from '@uiw/react-md-editor';
+import '../styles.css';
 
 import { getSpark, sparkMessages } from "./SparkMessages";
 
@@ -18,14 +20,13 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 });
 
 function EntrySubmitter(props) {
+
+  const handleClick = props.handleClick;
+
   // Component State
   const [value, setValue] = useState("");
   const [open, setOpen] = React.useState(false);
   const { inputs } = useAuth();
-
-  const onChangeEvent = (event) => {
-    setValue(event.target.value);
-  };
 
   // Alert Dialog functions
   const handleClickOpen = () => {
@@ -87,17 +88,19 @@ function EntrySubmitter(props) {
 
   return (
     <div>
-      <TextareaAutosize
-        rowsMin={5}
-        cols={60}
-        placeholder="Insert Journal entry here"
-        onChange={onChangeEvent}
-        defaultValue={value}
-      />
-
+      <div className="mdeditor">
+      <MDEditor
+        value={value}
+        onChange={setValue}
+        />
+      </div>
+      
+      <div className= "button" onClick={handleClick}>
       <Button color="primary" onClick={() => submitEntry(value)}>
         Submit
       </Button>
+      </div>
+      
 
       <div>
         <Dialog
