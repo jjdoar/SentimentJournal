@@ -5,10 +5,12 @@ import EntryDelete from "./EntryDelete";
 import { getFirstDayofMonth, getLastDayofMonth } from "./util";
 import { useAuth } from "../provider/AuthProvider";
 import { EntryContext } from "./Home";
+import '../styles.css';
 
 function EntryCache(props) {
   // Passed in from parent component(Calendar)
   const date = props.date;
+  const handleClick = props.handleClick;
 
   // Shared context(Created in home)
   const { setEntries } = useContext(EntryContext);
@@ -23,8 +25,6 @@ function EntryCache(props) {
       url: "http://0.0.0.0:8081/v0/journal_entries",
       params: { startDate: beg_date, endDate: end_date, userId: inputs.uid },
     }).then((response) => {
-      // console.log("Entry Chache: ");
-      // console.log(response.data);
       setEntries(response.data);
     });
   }
@@ -35,12 +35,17 @@ function EntryCache(props) {
 
   return (
     <>
-      <EntryViewer date={date} entries={entries} />
-      <EntryDelete
-        date={date}
-        entries={entries}
-        retrieveJournalEntries={retrieveJournalEntries}
-      />
+      <div onClick={handleClick}>
+        <EntryViewer date={date} entries={entries} />
+      </div>
+      <div className="button">
+        <EntryDelete
+          date={date}
+          entries={entries}
+          retrieveJournalEntries={retrieveJournalEntries}
+        />
+      </div>
+      
     </>
   );
 }
