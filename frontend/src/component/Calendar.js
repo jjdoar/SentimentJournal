@@ -16,6 +16,7 @@ import EntryCache from "./EntryCache";
 import "./Calendar.css";
 import { formatDateObj } from "./util";
 import { EntryContext } from "./Home";
+import EntrySwitch from './EntrySwitch';
 
 function Calendar(props) {
   // Component state
@@ -149,7 +150,8 @@ function Calendar(props) {
         <div>{days()}</div>
         <div>{cells()}</div>
       </div>
-      <EntryCache date={date} />
+        <EntrySwitch date={date}/>
+      {/* <EntryCache date={date} /> */}
     </div>
   );
 }

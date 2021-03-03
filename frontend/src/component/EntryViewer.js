@@ -1,6 +1,8 @@
 import React from "react";
 import "react-calendar/dist/Calendar.css";
 import { formatDateObj } from "./util";
+import MDEditor from "@uiw/react-md-editor";
+import '../styles.css';
 
 function EntryViewer(props) {
   // Passed in from parent component(EntryCache)
@@ -19,8 +21,11 @@ function EntryViewer(props) {
   }
 
   return (
-    <div>
-      <p>{getEntry(date, entries)}</p>
+    <div className="mdeditor">
+      <MDEditor
+        value={getEntry(date, entries)}
+        preview={'preview'}
+        />
     </div>
   );
 }

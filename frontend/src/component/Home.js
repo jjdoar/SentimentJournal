@@ -52,7 +52,8 @@ function Home() {
       <div>
         <p>{inputs.name}</p>
         <Calendar />
-        <EntrySubmitter />
+        {/* <EntrySubmitter /> */}
+
       </div>
       {/* </> */}
     </EntryContext.Provider>
