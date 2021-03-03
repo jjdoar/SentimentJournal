@@ -22,6 +22,37 @@ db = "host='0.0.0.0' dbname=%s user=%s password=%s" % (os.getenv('POSTGRES_DB'),
 conn = psycopg2.connect(db)
 cur = conn.cursor()
 
+def parsemarkdown(md):
+    # single quote fix
+    md = re.sub('\'', '\'\'', md)
+
+    # remove all list numbers (1. 2. etc)
+    md = re.sub(r"\d+\.", '', md)
+
+    # remove code blocks and inline
+    md = re.sub(r"\s{3,}.*\n", '', md)
+    md = re.sub(r"`.*`", '', md)
+
+    # remove images
+    md = re.sub(r"!\[.*\]\(.*\)", '', md)
+    md = re.sub(r"\[!\[.*\]\(.*\)\]\(.*\)", '', md)
+
+    # remove links, regular and formatted
+    md = re.sub(r"<.*>", '', md)
+    md = re.sub(r"\[.*\]\(.*\)", '', md)
+
+    # remove special characters
+    md = re.sub(r"#|=|\*|-|>|_", '', md)
+
+    # remove extra spaces
+    md = re.sub(' +', ' ', md)
+    # remove new lines
+    md = re.sub('\n', '', md)
+
+    print(md)
+
+    return md
+
 
 @app.route("/v0/journal_entries", methods=['GET', 'PUT', 'DELETE'])
 def journal_entries():
@@ -41,7 +72,6 @@ def journal_entries():
             users = cur.fetchall()
             for user in users:
                 name = str(user[1])
-            print(name)
             return make_response(jsonify(users), 200)
 
         if not any([startDate, endDate, userId]):
@@ -50,15 +80,6 @@ def journal_entries():
                 "error": "Invalid request body"
             }), 400)
 
-        #query = "".join([
-        #    "SELECT * FROM entry WHERE user_id = '",
-        #    str(userId),
-        #    "' AND date >= DATE '",
-        #    startDate,
-        #    "' AND date <= DATE '",
-        #    endDate,
-        #    "';"
-        #])
         query = "SELECT * FROM entry WHERE user_id = '{0}' AND date >= DATE '{1}' AND date <= DATE '{2}'"
         cur.execute(query.format(userId, startDate, endDate))
         entry_tuples = cur.fetchall()
@@ -102,15 +123,11 @@ def journal_entries():
             userId = request_body["userId"]
             content = request_body["content"]
 
-            # replace all single quotes in content string with double single quotes
-            newcontent = re.sub('\'', '\'\'', content)
-            print(newcontent)
-
             print(date, userId, content)
 
             # Detects the sentiment of the text
             document = language_v1.Document(
-                content=content, type_=language_v1.Document.Type.PLAIN_TEXT)
+                content=parsemarkdown(content), type_=language_v1.Document.Type.PLAIN_TEXT)
             sentiment = client.analyze_sentiment(
                 request={'document': document}).document_sentiment
             score = round(sentiment.score, 3)
@@ -127,7 +144,7 @@ def journal_entries():
 
             # Check if entry exists yet
             if not entry_tuple:
-                query = f"INSERT INTO entry (user_id, date, content, score) VALUES ('{userId}', '{date}', '{newcontent}', {score})"
+                query = f"INSERT INTO entry (user_id, date, content, score) VALUES ('{userId}', '{date}', '{content}', {score})"
                 cur.execute(query.format(userId, date, content, score))
                 conn.commit()
 
@@ -137,7 +154,7 @@ def journal_entries():
 
             query = "UPDATE entry SET content = '{0}', score = {1} WHERE user_id = '{2}' AND date = '{3}'"
             print(query)
-            cur.execute(query.format(newcontent, score, userId, date))
+            cur.execute(query.format(content, score, userId, date))
             conn.commit()
 
             return make_response(jsonify({
