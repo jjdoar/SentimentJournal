@@ -12,6 +12,8 @@ export function formatDateObj(date) {
   );
 }
 
+
+
 export function getFirstDayofMonth(date) {
   return (
     date.getUTCFullYear() + "-" + pad(date.getUTCMonth() + 1) + "-" + pad(1)
@@ -28,3 +30,15 @@ export function getLastDayofMonth(date) {
     pad(lastDay.getUTCDate())
   );
 }
+
+// export function getNextDay(date) {
+//   var tomorrow = new Date()
+
+//   return (
+//     tomorrow.getUTCFullYear() +
+//     "-" +
+//     pad(tomorrow.getUTCMonth() + 1) +
+//     "-" +
+//     pad(tomorrow.getUTCDate())
+//   );
+// }
