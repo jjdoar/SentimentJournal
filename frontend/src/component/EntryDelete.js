@@ -1,5 +1,5 @@
 import React from "react";
-import { getFirstDayofMonth, getLastDayofMonth } from "./util";
+import { formatDateObj, getFirstDayofMonth, getLastDayofMonth } from "./util";
 import { Button } from "@material-ui/core";
 import axios from "axios";
 import { useAuth } from "../provider/AuthProvider";
@@ -10,20 +10,33 @@ function EntryDelete(props) {
     const date = props.date;
     const entries = props.entries;
     const retrieveJournalEntries = props.retrieveJournalEntries;
+    const colorCells = props.colorCells;
 
-    function deleteJournalEntries(beg_date, end_date) {
+    function resetColor() {
+      for (let entry in entries) {
+        var cellColor = "rgb(255, 255, 255)";
+        document.getElementById(
+          entries[entry]["date"]
+        ).style.background = cellColor;
+      }
+    }
+
+    function deleteJournalEntries(date) {
+      const formattedDate = formatDateObj(date);
+      console.log(date)
         axios({
           method: "DELETE",
           url: "http://0.0.0.0:8081/v0/journal_entries",
-          params: { startDate: beg_date, endDate: end_date, userId: inputs.uid },
+          params: { startDate: formattedDate, endDate: formattedDate, userId: inputs.uid },
         }).then((response) => {
-          retrieveJournalEntries(beg_date, end_date);
+          retrieveJournalEntries(getFirstDayofMonth(date), getLastDayofMonth(date));
+          resetColor();
         })
       }
 
     if (entries.length !== 0) {
         return (
-            <Button color="primary" onClick={() => deleteJournalEntries(getFirstDayofMonth(date), getLastDayofMonth(date))}>
+            <Button color="primary" onClick={() => deleteJournalEntries(date)}>
             Delete
             </Button>
         );

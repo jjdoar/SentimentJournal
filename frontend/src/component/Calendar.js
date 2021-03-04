@@ -12,7 +12,6 @@ import {
   startOfWeek,
   endOfWeek,
 } from "date-fns";
-import EntryCache from "./EntryCache";
 import "./Calendar.css";
 import { formatDateObj } from "./util";
 import { EntryContext } from "./Home";
@@ -119,7 +118,7 @@ function Calendar(props) {
     if (entries !== "Empty") {
       for (let entry in entries) {
         var cellColor = calcColor(entries[entry]["score"]);
-        // console.log(cellColor);
+        console.log(cellColor);
         document.getElementById(
           entries[entry]["date"]
         ).style.background = cellColor;
@@ -150,8 +149,7 @@ function Calendar(props) {
         <div>{days()}</div>
         <div>{cells()}</div>
       </div>
-        <EntrySwitch date={date}/>
-      {/* <EntryCache date={date} /> */}
+        <EntrySwitch date={date} colorCells={colorCells}/>
     </div>
   );
 }
