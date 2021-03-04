@@ -22,6 +22,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 function EntrySubmitter(props) {
 
   const handleClick = props.handleClick;
+  const colorCells = props.colorCells;
 
   // Component State
   const [value, setValue] = useState("");
@@ -34,6 +35,7 @@ function EntrySubmitter(props) {
   };
   const handleClose = () => {
     setOpen(false);
+    handleClick();
   };
 
   function doSpark() {
@@ -65,6 +67,8 @@ function EntrySubmitter(props) {
 
       if (avgScore < threshold) {
         handleClickOpen();
+      } else {
+        handleClick(); // updates calendar after submit
       }
     });
   }
@@ -82,8 +86,10 @@ function EntrySubmitter(props) {
         content: value,
       },
     }).then(() => {
+      colorCells();
       doSpark();
     });
+    // this.handleClick;
   }
 
   return (
@@ -95,7 +101,7 @@ function EntrySubmitter(props) {
         />
       </div>
       
-      <div className= "button" onClick={handleClick}>
+      <div className= "button" >
       <Button color="primary" onClick={() => submitEntry(value)}>
         Submit
       </Button>
