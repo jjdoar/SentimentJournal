@@ -41,12 +41,7 @@ function EntryDelete(props) {
       <Button
         style={styling}
         color="primary"
-        onClick={() =>
-          deleteJournalEntries(
-            getFirstDayofMonth(date),
-            getLastDayofMonth(date)
-          )
-        }
+        onClick={() => deleteJournalEntries(date)}
       >
         Delete
       </Button>
