@@ -48,8 +48,6 @@ export function getLastDayofMonth(date) {
 }
 
 export function getColour(startColour, endColour, min, max, value) {
-  console.log(value);
-
   var startRGB = hexToRgb(startColour);
   var endRGB = hexToRgb(endColour);
   var percentFade = map(value, min, max, 0, 1);

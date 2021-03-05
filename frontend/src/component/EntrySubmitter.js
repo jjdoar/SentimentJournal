@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Button, TextareaAutosize } from "@material-ui/core";
+import { Button } from "@material-ui/core";
 import axios from "axios";
 import { formatDateObj } from "./util";
 import { useAuth } from "../provider/AuthProvider";
@@ -10,8 +10,8 @@ import DialogContent from "@material-ui/core/DialogContent";
 import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import Slide from "@material-ui/core/Slide";
-import MDEditor from '@uiw/react-md-editor';
-import '../styles.css';
+import MDEditor from "@uiw/react-md-editor";
+import "../styles.css";
 
 import { getSpark, sparkMessages } from "./SparkMessages";
 
@@ -20,7 +20,6 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 });
 
 function EntrySubmitter(props) {
-
   const handleClick = props.handleClick;
 
   // Component State
@@ -38,8 +37,8 @@ function EntrySubmitter(props) {
 
   function doSpark() {
     const currentDate = new Date();
-    const threshold = -0.5;
-    const days = 5;
+    const threshold = -0.25;
+    const days = 3;
 
     // Get entries from range of days[today-days, today]
     const end_date = formatDateObj(currentDate);
@@ -52,8 +51,8 @@ function EntrySubmitter(props) {
       url: "http://127.0.0.1:8081/v0/journal_entries",
       params: { startDate: beg_date, endDate: end_date, userId: inputs.uid },
     }).then((response) => {
-      console.log("Spark Entries: ");
-      console.log(response.data);
+      // console.log("Spark Entries: ");
+      // console.log(response.data);
 
       // Calculate avg score of range of days
       let totalScore = 0.0;
@@ -86,21 +85,26 @@ function EntrySubmitter(props) {
     });
   }
 
+  const styling = {
+    backgroundColor: "white",
+    border: "2px solid",
+  };
+
   return (
     <div>
       <div className="mdeditor">
-      <MDEditor
-        value={value}
-        onChange={setValue}
-        />
+        <MDEditor value={value} onChange={setValue} />
       </div>
-      
-      <div className= "button" onClick={handleClick}>
-      <Button color="primary" onClick={() => submitEntry(value)}>
-        Submit
-      </Button>
+
+      <div className="button" onClick={handleClick}>
+        <Button
+          style={styling}
+          color="primary"
+          onClick={() => submitEntry(value)}
+        >
+          Submit
+        </Button>
       </div>
-      
 
       <div>
         <Dialog
