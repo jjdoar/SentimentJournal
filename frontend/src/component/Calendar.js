@@ -122,10 +122,8 @@ function Calendar(props) {
           "#73ff73", // Happy
           -1,
           1,
-          Math.sin(Date.now())
-          // entries[entry]["score"]
+          entries[entry]["score"]
         );
-        console.log(cellColor);
         document.getElementById(
           entries[entry]["date"]
         ).style.background = cellColor;
