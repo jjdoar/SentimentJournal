@@ -13,9 +13,9 @@ import {
   endOfWeek,
 } from "date-fns";
 import "./Calendar.css";
-import { formatDateObj } from "./util";
+import { formatDateObj, getColour } from "./util";
 import { EntryContext } from "./Home";
-import EntrySwitch from './EntrySwitch';
+import EntrySwitch from "./EntrySwitch";
 
 function Calendar(props) {
   // Component state
@@ -117,25 +117,18 @@ function Calendar(props) {
   function colorCells() {
     if (entries !== "Empty") {
       for (let entry in entries) {
-        var cellColor = calcColor(entries[entry]["score"]);
-        console.log(cellColor);
+        var cellColor = getColour(
+          "#ff6619", // Sad
+          "#73ff73", // Happy
+          -1,
+          1,
+          entries[entry]["score"]
+        );
         document.getElementById(
           entries[entry]["date"]
         ).style.background = cellColor;
       }
     }
-  }
-
-  function calcColor(score) {
-    // Return a color corresponding to the given mood score
-    var redScore = 255;
-    var greenScore = 255;
-    if (score >= 0) {
-      redScore = 255 - Math.floor(255 * score);
-    } else {
-      greenScore = 255 + Math.floor(255 * score);
-    }
-    return "rgb(" + redScore + ", " + greenScore + ", 0)";
   }
 
   useEffect(() => {
