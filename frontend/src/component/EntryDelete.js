@@ -10,6 +10,15 @@ function EntryDelete(props) {
   const entries = props.entries;
   const retrieveJournalEntries = props.retrieveJournalEntries;
 
+  function resetColor() {
+    for (let entry in entries) {
+      var cellColor = "rgb(255, 255, 255)";
+      document.getElementById(
+        entries[entry]["date"]
+      ).style.background = cellColor;
+    }
+  }
+
   function deleteJournalEntries(beg_date, end_date) {
     axios({
       method: "DELETE",
@@ -17,6 +26,7 @@ function EntryDelete(props) {
       params: { startDate: beg_date, endDate: end_date, userId: inputs.uid },
     }).then((response) => {
       retrieveJournalEntries(beg_date, end_date);
+      resetColor();
     });
   }
 
