@@ -11,6 +11,7 @@ function EntryCache(props) {
   // Passed in from parent component(Calendar)
   const date = props.date;
   const handleClick = props.handleClick;
+  const colorCells = props.colorCells;
 
   // Shared context(Created in home)
   const { setEntries } = useContext(EntryContext);
@@ -26,6 +27,8 @@ function EntryCache(props) {
       params: { startDate: beg_date, endDate: end_date, userId: inputs.uid },
     }).then((response) => {
       setEntries(response.data);
+      console.log(response.data)
+      console.log(response.data.length)
     });
   }
 
@@ -43,6 +46,7 @@ function EntryCache(props) {
           date={date}
           entries={entries}
           retrieveJournalEntries={retrieveJournalEntries}
+          colorCells={colorCells}
         />
       </div>
     </>

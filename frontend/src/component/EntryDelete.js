@@ -1,12 +1,11 @@
 import React from "react";
-import { getFirstDayofMonth, getLastDayofMonth } from "./util";
+import { formatDateObj, getFirstDayofMonth, getLastDayofMonth } from "./util";
 import { Button } from "@material-ui/core";
 import axios from "axios";
 import { useAuth } from "../provider/AuthProvider";
 
 function EntryDelete(props) {
   const { inputs } = useAuth();
-
   const date = props.date;
   const entries = props.entries;
   const retrieveJournalEntries = props.retrieveJournalEntries;

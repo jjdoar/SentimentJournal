@@ -5,7 +5,6 @@ import SearchBackgrounds from "./BackgroundPicker.js";
 import PopupState, { bindTrigger, bindPopover } from "material-ui-popup-state";
 import Calendar from "./Calendar";
 import { useAuth } from "../provider/AuthProvider";
-import EntrySubmitter from "./EntrySubmitter";
 
 // Create context to share journal entries between components
 export const EntryContext = createContext({

@@ -142,8 +142,7 @@ function Calendar(props) {
         <div>{days()}</div>
         <div>{cells()}</div>
       </div>
-      <EntrySwitch date={date} />
-      {/* <EntryCache date={date} /> */}
+        <EntrySwitch date={date} colorCells={colorCells}/>
     </div>
   );
 }

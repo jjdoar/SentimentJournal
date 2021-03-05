@@ -30,6 +30,8 @@ export function formatDateObj(date) {
   );
 }
 
+
+
 export function getFirstDayofMonth(date) {
   return (
     date.getUTCFullYear() + "-" + pad(date.getUTCMonth() + 1) + "-" + pad(1)
