@@ -19,13 +19,14 @@ function EntryDelete(props) {
     }
   }
 
-  function deleteJournalEntries(beg_date, end_date) {
+  function deleteJournalEntries(date) {
+    const formattedDate = formatDateObj(date);
     axios({
       method: "DELETE",
       url: "http://0.0.0.0:8081/v0/journal_entries",
-      params: { startDate: beg_date, endDate: end_date, userId: inputs.uid },
+      params: { startDate: formattedDate, endDate: formattedDate, userId: inputs.uid },
     }).then((response) => {
-      retrieveJournalEntries(beg_date, end_date);
+      retrieveJournalEntries(getFirstDayofMonth(date), getLastDayofMonth(date));
       resetColor();
     });
   }
