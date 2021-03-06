@@ -53,16 +53,17 @@ function EntrySubmitter(props) {
       url: "http://127.0.0.1:8081/v0/journal_entries",
       params: { startDate: beg_date, endDate: end_date, userId: inputs.uid },
     }).then((response) => {
-
       // Calculate avg score of range of days
       let totalScore = 0.0;
       for (let entry in response.data) {
         totalScore += response.data[entry]["score"];
       }
-
       let avgScore = totalScore / Object.keys(response.data).length;
 
-      if (avgScore < threshold) {
+      // Get todays mood score
+      let todayScore = response.data[response.data.length - 1]["score"];
+
+      if (avgScore < threshold && todayScore < 0.0) {
         handleClickOpen();
       } else {
         handleClick(); // updates calendar after submit
@@ -99,7 +100,7 @@ function EntrySubmitter(props) {
       <div className="mdeditor">
         <MDEditor value={value} onChange={setValue} />
       </div>
-      <div className="button" >
+      <div className="button">
         <Button
           style={styling}
           color="primary"

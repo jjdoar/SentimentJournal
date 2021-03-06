@@ -113,7 +113,7 @@ header {
 }
 .calendar .body .selected {
   border-left: 10px solid transparent;
-  border-image: linear-gradient(45deg, #1affa0 0%, #cff153 40%);
+  border-image: linear-gradient(45deg, #261f7c 0%, #585668 40%);
   border-image-slice: 1;
 }
 .calendar .body .row {
