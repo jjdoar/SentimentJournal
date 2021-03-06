@@ -99,7 +99,7 @@ function EntrySubmitter(props) {
       <div className="mdeditor">
         <MDEditor value={value} onChange={setValue} />
       </div>
-      <div className="button" onClick={handleClick}>
+      <div className="button" >
         <Button
           style={styling}
           color="primary"
