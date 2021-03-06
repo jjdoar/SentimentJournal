@@ -27,8 +27,6 @@ function EntryCache(props) {
       params: { startDate: beg_date, endDate: end_date, userId: inputs.uid },
     }).then((response) => {
       setEntries(response.data);
-      console.log(response.data)
-      console.log(response.data.length)
     });
   }
 
