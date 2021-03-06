@@ -49,8 +49,6 @@ def parsemarkdown(md):
     # remove new lines
     md = re.sub('\n', '', md)
 
-    print(md)
-
     return md
 
 
@@ -63,8 +61,6 @@ def journal_entries():
     userId = request.args.get("userId")
 
     if request.method == 'GET':
-        print(startDate, endDate, userId)
-
         # Check if logging in
         if userId and not (startDate and endDate):
             query = "SELECT * FROM users WHERE id = '{0}'"
@@ -98,7 +94,6 @@ def journal_entries():
         return make_response(jsonify(journal_entries), 200)
 
     if request.method == 'PUT':
-        print(request_body)
 
         # Check if wrong input
         if not request_body or not (request_body.keys() == {"userId", "name"}
@@ -123,8 +118,6 @@ def journal_entries():
             userId = request_body["userId"]
             content = request_body["content"]
 
-            print(date, userId, content)
-
             # Detects the sentiment of the text
             document = language_v1.Document(
                 content=parsemarkdown(content), type_=language_v1.Document.Type.PLAIN_TEXT)
@@ -139,6 +132,7 @@ def journal_entries():
                 date,
                 "'"
             ])
+
             cur.execute(query.format(userId, date))
             entry_tuple = cur.fetchall()
 
@@ -153,7 +147,7 @@ def journal_entries():
                 }), 201)
 
             query = "UPDATE entry SET content = '{0}', score = {1} WHERE user_id = '{2}' AND date = '{3}'"
-            print(query)
+
             cur.execute(query.format(content, score, userId, date))
             conn.commit()
 
