@@ -10,8 +10,8 @@ import { firebaseAuth } from "./provider/AuthProvider";
 
 function App() {
   const { token } = useContext(firebaseAuth);
-  console.log(token);
-  return (
+
+    return (
     <>
       {/* switch allows switching which components render.  */}
       <Switch>

@@ -13,7 +13,6 @@ const Signup = (props) => {
   
   const handleSubmit = async (e) => {
     e.preventDefault()
-    console.log('handleSubmit')
     //wait to signup 
     await handleSignup()
     //push home
@@ -21,7 +20,6 @@ const Signup = (props) => {
   }
   const handleChange = e => {
     const {name, value} = e.target
-    console.log(inputs)
     setInputs(prev => ({...prev, [name]: value}))
   }
   

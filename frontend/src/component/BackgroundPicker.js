@@ -21,9 +21,7 @@ export default function BackgroundPicker() {
             orderBy: 'relevant',
             orientation: 'landscape'})
             .then(result => {
-                if (result.errors) {
-                    console.log('error occured: ', result.errors[0]);
-                } else {
+                if (!result.errors) {
                     const { results } = result.response;
                     setImages( results );
                 }

@@ -14,13 +14,10 @@ const Signin = () => {
   
   const handleSubmit = (e) => {
     e.preventDefault()
-    console.log('handleSubmit')
     handleSignin()
-    
   }
   const handleChange = e => {
     const {name, value} = e.target
-    console.log(inputs)
     setInputs(prev => ({...prev, [name]: value}))
   }
   
