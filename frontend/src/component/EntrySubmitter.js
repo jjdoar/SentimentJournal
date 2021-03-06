@@ -53,8 +53,6 @@ function EntrySubmitter(props) {
       url: "http://127.0.0.1:8081/v0/journal_entries",
       params: { startDate: beg_date, endDate: end_date, userId: inputs.uid },
     }).then((response) => {
-      // console.log("Spark Entries: ");
-      // console.log(response.data);
 
       // Calculate avg score of range of days
       let totalScore = 0.0;
