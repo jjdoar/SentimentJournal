@@ -1,10 +1,12 @@
-import React, { useState, createContext } from "react";
+import React, { useState, createContext, useContext } from "react";
 import { Link } from "react-router-dom";
 import { Button, Box, Popover } from "@material-ui/core";
 import SearchBackgrounds from "./BackgroundPicker.js";
 import PopupState, { bindTrigger, bindPopover } from "material-ui-popup-state";
 import Calendar from "./Calendar";
-import { useAuth } from "../provider/AuthProvider";
+import { useAuth, firebaseAuth } from "../provider/AuthProvider";
+
+import "./Calendar.css";
 
 // Create context to share journal entries between components
 export const EntryContext = createContext({
@@ -13,9 +15,16 @@ export const EntryContext = createContext({
 });
 
 function Home() {
-  const { inputs } = useAuth();
+  const { inputs, handle } = useAuth();
+  const {handleSignout} = useContext(firebaseAuth)
   // Component state
   const [entries, setEntries] = useState("Empty");
+
+  const styling = {
+    backgroundColor: "white",
+    border: "2px solid",
+    textAlign: "left",
+  };
 
   return (
     <EntryContext.Provider value={{ entries, setEntries }}>
@@ -48,8 +57,18 @@ function Home() {
           </div>
         )}
       </PopupState>
+      <p>{inputs.name}</p>
+      <div className="button" >
+        <Button
+          style={styling}
+          color="primary"
+          onClick={() => handleSignout()}
+        >
+          Sign Out
+        </Button>
+      </div>
       <div>
-        <p>{inputs.name}</p>
+        
         <Calendar />
         {/* <EntrySubmitter /> */}
 
