@@ -6,11 +6,11 @@ A mood tracking journal
 cd SentimentJournal  
 python3 -m venv venv  
 ```
-### Windows  
+##### Windows  
 ```
 venv/bin/activate  
 ```
-### Linux, MacOS  
+##### Linux, MacOS  
 ```
 source venv/bin/activate  
 ```
@@ -28,8 +28,12 @@ pip install -r backend/requirements.txt
 ```
 
 ## Setup Google Cloud Credentials  
-### Linux, MacOS
+##### Linux, MacOS
 ```
 export GOOGLE_APPLICATION_CREDENTIALS=path/to/apikey.json  
+```
+
+## Run server
+```
 python backend/server.py  
 ```
