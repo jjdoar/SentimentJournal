@@ -1,6 +1,17 @@
+# Team
+
+Daniel Escoto
+Jacob Doar
+Miranda Eng
+Dominik Schmidt
+James Garrett
+Parker Soto
+
 # SentimentJournal
 
-A mood tracking journal
+A journal to track a user's mood over time.
+Journal Entries are scored using the Google Sentiment API.
+Mood scores are then displayed on the calendar using colors.
 
 ## Backend Setup
 
