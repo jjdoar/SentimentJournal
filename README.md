@@ -15,7 +15,9 @@ Parker Soto
 # SentimentJournal
 
 A journal to track a user's mood over time.
+
 Journal Entries are scored using the Google Sentiment API.
+
 Mood scores are then displayed on the calendar using colors.
 
 ## Backend Setup
