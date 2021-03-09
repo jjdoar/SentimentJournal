@@ -1,10 +1,15 @@
 # Team
 
-Daniel Escoto,
-Jacob Doar,
-Miranda Eng,
-Dominik Schmidt,
-James Garrett,
+Daniel Escoto
+
+Jacob Doar
+
+Miranda Eng
+
+Dominik Schmidt
+
+James Garrett
+
 Parker Soto
 
 # SentimentJournal
