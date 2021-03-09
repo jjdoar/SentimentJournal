@@ -1,39 +1,76 @@
-# SentimentJournal  
-A mood tracking journal  
+# SentimentJournal
 
-## Setup Environment  
+A mood tracking journal
+
+## Backend Setup
+
+Install Docker
+Move to the backend folder
+
+Run the postgreSQL image
+
 ```
-cd SentimentJournal  
-python3 -m venv venv  
-```
-#### Windows  
-```
-venv/bin/activate  
-```
-#### Linux, MacOS  
-```
-source venv/bin/activate  
+docker-compose up -d
 ```
 
-## Spin up db with docker  
+Setup the environment
+
 ```
-cd backend  
-docker-compose up -d  
+python3 -m venv venv
 ```
 
-## Install Dependencies 
+Activate the environment(Windows)
+
 ```
-cd src  
-pip install -r backend/requirements.txt  
+venv/Scripts/activate
 ```
 
-## Setup Google Cloud Credentials  
-#### Linux, MacOS
+Activate the environment(Linux/MacOS)
+
 ```
-export GOOGLE_APPLICATION_CREDENTIALS=path/to/apikey.json  
+. venv/bin/activate
 ```
 
-## Run Server
+Install dependencies
+
 ```
-python backend/server.py  
+pip install -r requirement.txt
 ```
+
+Set up Google Cloud credentials (Windows)
+
+```
+set GOOGLE_APPLICATION_CREDENTIALS=<path to api key>
+```
+
+Setup Google cloud credentials(Linux/MacOS)
+
+```
+export GOOGLE_APPLICATION_CREDENTIALS=<path to api key>
+```
+
+Start the server
+
+```
+python3 src/server.py
+```
+
+## Frontend Setup
+
+Move to the frontend folder
+
+Install Node and npm
+
+```
+npm install
+```
+
+Start the app
+
+```
+npm start
+```
+
+## Notes
+
+For running locally change the IP address in frontend http requests to localhost
