@@ -21,7 +21,7 @@
 .env.production.local
 .lock
 
-src/firebase/firebaseIndex.js
+firebaseIndex.js
 
 npm-debug.log*
 yarn-debug.log*
