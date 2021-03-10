@@ -23,6 +23,7 @@ Mood scores are then displayed on the calendar using colors.
 ## Backend Setup
 
 Install Docker
+
 Move to the backend folder
 
 Run the postgreSQL image
@@ -76,6 +77,10 @@ python3 src/server.py
 ## Frontend Setup
 
 Move to the frontend folder
+
+paste `firebaseIndex.js` to `/frontend/src/firebase/`
+
+paste `BackgroundPicker.js` to `/frontend/src/component/`
 
 Install Node and npm
 
