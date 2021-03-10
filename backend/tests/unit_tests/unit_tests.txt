@@ -1,0 +1,66 @@
+Backend Tests:
+
+Equivalence class: GET request with valid parameters
+Test: test_get
+Values: {'startDate': '2020-11-17', 'endDate': '2021-11-17', 'userId': 1}
+Result: HTTP 200 OK
+
+Equivalence class: GET request without any parameters
+Test: test_get_empty
+Values: {}
+Result: HTTP Bad request
+
+Equivalence class: GET request no userId key-value specified
+Test: test_get_no_id_key_value
+Values: {'startDate': '2020-11-17', 'endDate': '2021-11-17'}
+Result: HTTP Bad request
+
+Equivalence class: GET request userId value does not exist in db
+Test: test_get_id_DNE
+Values: {'startDate': '2020-11-17', 'endDate': '2021-11-17', 'userId': 666}
+Result: HTTP Bad Request 
+
+Equivalence class: GET request key name does not exist in db, 'endDates'
+Test: test_get_key_DNE
+Values: {'startDate': '2020-11-17', 'endDates': '2021-11-17', 'userId': 1}
+Result: HTTP Bad request
+
+Equivalence class: simple put -> TEST: simple post -> TEST: simple get -> check if data exists in db
+Test: test_put
+Values: {"content": "Created PUT.", "date": "2021-01-27", "userId": 1}
+Result: HTTP created
+
+Equivalence class: PUT request without any parameters
+Test: test_put_empty
+Values: {}
+Result: HTTP Bad request
+
+Equivalence class: PUT request with no userId key-value
+Test: test_put_no_id_key_value
+Values: {"content": "I am creating a post.", "date": "2021-01-04"}
+Result: HTTP Bad request
+
+Equivalence class: PUT request with key name does not exist in db, 'dates'
+Test: test_put_key_DNE
+Values: {"content": "I am creating a post.", "dates": "2021-01-04", "userId": 1}
+Result: HTTP Bad request
+
+Equivalence class: POST request with valid parameters
+Test: test_post
+Values: {"content": "Created POST.", "date": "2021-01-27", "userId": 1}
+Result: HTTP ok
+
+Equivalence class: POST request with empty data
+Test: test_post_empty
+Values: {}
+Result: HTTP no content
+
+Equivalence class: POST request no userId key-value
+Test: test_post_no_id_key_value
+Values: {"content": "I am creating a post.", "date": "2021-01-04"}
+Result: HTTP bad request
+
+Equivalence class: POST request  userId value does not exist in db
+Test: test_post_id_DNE
+Values: {"content": "I am creating a post.", "date": "2021-01-04", "userId": 666}
+Result: HTTP no content
