@@ -2,4 +2,4 @@ keys/
 .DS_Store
 .DS_Store?
 
-/frontend/src/firebase/
+/frontend/src/firebase/firebaseIndex.js
